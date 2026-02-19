@@ -42,24 +42,26 @@ export default function Login(){
 
 
     return (
-        <div>
+        <div className='p-2 flex min-h-screen items-center justify-center'>
+        <div className='w-full m-2 md:w-1/2 lg:w-3/7 flex flex-col p-2 space-y-2 bg-gray-50 rounded-lg shadow md:space-x-2 lg:py-0'>
             <div>
-                <p>Login</p>
+                <p className='text-xl font-bold text-center leading-tight tracking-tight p-2'>Login</p>
             </div>
-            <form action="" onSubmit={handleSubmit}>
+            <form className='p-3 space-y-4' action="" onSubmit={handleSubmit}>
                 { errors.detail &&(
                     <p className='text-red-500 text-sm text-center'>{errors.detail}</p>
                 )}
                 <div>
-                    <input type="email" name="email" placeholder="email" onChange={handleChange} />
+                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="email" name="email" placeholder="email" onChange={handleChange} />
                 </div>
                 <div>
-                    <input type="password" name="password" placeholder="password" onChange={handleChange} />
+                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="password" name="password" placeholder="password" onChange={handleChange} />
                 </div>
                 <div>
-                    <button type='submit'>Login</button>
+                    <button className='bg-green-500 w-full rounded-lg text-white text-[14px] px-5 py-2.5 text-center' type='submit'>Login</button>
                 </div>
             </form>
+        </div>
         </div>
     )
 }
