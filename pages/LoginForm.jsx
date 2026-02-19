@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import API from '../src/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login(){
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     });
+
+    const [errors, setErrors] = useState({})
+    const navigate = useNavigate();
+    {/*navigate e.g navigate('/signup'); */}
     
 
     const handleChange = (e) => {
@@ -14,6 +19,8 @@ export default function Login(){
             [e.target.name]: e.target.value
         });
 
+        {/*clear errors on type */}
+        if (errors.detail) setErrors({});
     };
 
     const handleSubmit = async (e) => {
@@ -23,10 +30,12 @@ export default function Login(){
             await API.post('login/', formData);
             {/*alert */}
             alert('Logged In Successfully')
+            {/*redirect navigate */}
+            navigate('/dashboard')
 
         } catch (error) {
             
-        console.log(error, 'Invalid email or password')
+            setErrors(error.response?.data || {detail: "invalid credentials"});
            
         }
     };
@@ -38,6 +47,9 @@ export default function Login(){
                 <p>Login</p>
             </div>
             <form action="" onSubmit={handleSubmit}>
+                { errors.detail &&(
+                    <p className='text-red-500 text-sm text-center'>{errors.detail}</p>
+                )}
                 <div>
                     <input type="email" name="email" placeholder="email" onChange={handleChange} />
                 </div>
