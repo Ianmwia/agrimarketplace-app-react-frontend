@@ -12,6 +12,7 @@ export default function SignUp(){
         location: "",
     });
 
+    const [errors, setErrors] = useState({})
     const [roleOptions, setRoleOptions] = useState([])
     const [fieldOptions, setFieldOptions] = useState([])   
 
@@ -23,11 +24,20 @@ export default function SignUp(){
     }, []);
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
+        const {name, value} = e.target;
+
+        setFormData((prev)=>{
+            const newData = {...prev, [name]: value};
+            
+            if (name === 'role' && value !== 'field_officer'){
+                newData.field = '';
+            }
+            return newData;
         });
 
+        
+
+        setErrors({})
     };
 
     const handleSubmit = async (e) => {
@@ -40,33 +50,44 @@ export default function SignUp(){
             alert('account created successfully')
             {/*redirect */}
             {/*clear formdata */}
-            setFormData({})
+            setFormData([])
 
         } catch (error) {
-            console.log(error)
+            if (error.response && error.response.data) {
+                setErrors(error.response.data);
+            }else{
+                setErrors({ non_field_errors: 'An unexpected error occurred'})
+            }
         }
     };
 
     return(
-        <div className='m-2 border flex flex-col'>
-            <div className='bg-green-700/70'>
-                <p className='text-[20px] text-white text-center p-2'>Register</p>
+        <div className='p-2 flex min-h-screen items-center justify-center'>
+        <div className='w-full m-2 md:w-1/2 lg:w-3/7 flex flex-col p-2 space-y-2 md:space-x-2 lg:py-0 bg-gray-50 rounded-lg shadow'>
+            <div className=''>
+                <p className='text-xl font-bold text-center leading-tight tracking-tight p-2'>Create an account</p>
             </div>
-            <form className='m-2' action="" onSubmit={handleSubmit}>
+            <form className='p-3 space-y-4' action="" onSubmit={handleSubmit}>
+                { errors.non_field_errors && (
+                    <p className='text-red-600 text-sm text-center mb-2'>{errors.non_field_errors}</p>
+                )}
                 <div>
-                    <input className='w-full p-2 outline rounded-3xl' type="text" name="first_name" placeholder="first name" onChange={handleChange} />
+                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="text" name="first_name" placeholder="first name" onChange={handleChange} />
                 </div>
                 <div>
-                    <input type="text" name="last_name" placeholder="last name" onChange={handleChange} />
+                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="text" name="last_name" placeholder="last name" onChange={handleChange} />
                 </div>
                 <div>
-                    <input type="email" name="email" placeholder="email" onChange={handleChange} required />
+                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="email" name="email" placeholder="email" onChange={handleChange} required autoComplete='email' />
                 </div>
                 <div>
-                    <input type="password" name="password" placeholder="password" onChange={handleChange} required/>
+                    {errors.password && (
+                        <p className='text-red-600 text-sm text-center mb-2'>{errors.password?.[0]}</p>
+                    ) }
+                    <input className={`bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5 ${errors.password ? 'border-red-500': 'border-gray-300'}`} type="password" name="password" placeholder="password" onChange={handleChange} required autoComplete='new-password'/>
                 </div>
                 <div>
-                    <select name="role" value={formData.role} onChange={handleChange}>
+                    <select className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' name="role" value={formData.role} onChange={handleChange}>
                         <option value="">Select Role</option>
                         {roleOptions.map((r)=> (
                             <option key={r} value={r}>{r}</option>
@@ -74,20 +95,27 @@ export default function SignUp(){
                     </select>
                 </div>
                 <div>
-                    <select name="field" value={formData.field} onChange={handleChange}>
+                    {formData.role === 'field_officer' && (
+                    <select className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' name="field" value={formData.field} onChange={handleChange}>
                         <option value="">Select Field</option>
                         {fieldOptions.map((f)=> (
                             <option key={f} value={f}>{f}</option>
                         ))}
                     </select>
+                    )}
+                </div>
+
+                <div>
+                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="text" name="location" placeholder="location" onChange={handleChange} />
                 </div>
                 <div>
-                    <input type="text" name="location" placeholder="location" onChange={handleChange} />
-                </div>
-                <div>
-                    <button type='submit'>Register</button>
+                    <button className='bg-green-500 w-full rounded-lg text-white text-[14px] px-5 py-2.5 text-center' type='submit'>Register</button>
                 </div>
             </form>
+            <div className='p-2'>
+                <p className='text-sm font-light text-gray-500'>Already have an account? <a href="" className='text-sm font-medium text-green-500'>Register here</a></p>
+            </div>
+        </div>
         </div>
     )
 
