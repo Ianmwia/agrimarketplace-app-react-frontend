@@ -1,0 +1,19 @@
+// {
+//   "compilerOptions": {
+//     "baseUrl": ".",
+//     "paths": {
+//       "@/*": ["./src/*"]
+//     }
+//   }
+// }
+//base url is crying
+{
+"compilerOptions": {
+    "checkJs": false,
+    "jsx": "react-jsx",
+    "paths": {
+        "@/*": ["./src/*"]
+    }
+},
+"exclude": ["node_modules"]
+}
