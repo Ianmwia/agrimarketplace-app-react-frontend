@@ -6,9 +6,11 @@ import SignUp from '../pages/SignupForm'
 import Navbar from '../components/Navbar'
 import Layout from './components/layout'
 import Home from '../pages/Home'
+import Profile from '../pages/Profile'
+import FarmerDashboard from '../dashboards/Farmer'
 
 function App() {
-  
+
   return (
     <BrowserRouter>
     <Toaster position='top-right'/>
@@ -18,6 +20,8 @@ function App() {
         {/*navbar routes */}
         <Route element={<Layout />}>
         <Route path='/home' element={<Home/>}/>
+        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/farmer' element={<FarmerDashboard/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
