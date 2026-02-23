@@ -18,12 +18,9 @@ export default function Marketplace(){
 
     const fetchMarketData = async () => {
         try {
-            const [prodRes, orderRes] = await Promise.all([
-                API.get('produce/'),
-                API.get('order/')
-            ]);
-            setProducts(prodRes.data);
-            setOrders(orderRes.data);
+            const res = await API.get('order/');
+            setProducts(res.data.available_produce || []);
+            setOrders(res.data.orders || []);
         } catch (error) {
             toast.error('Failed to fetch data')
         }
@@ -55,12 +52,12 @@ export default function Marketplace(){
             {/*tabs */}
             <div className='flex justify-center gap-4 mb-10'>
                 <Button onClick={()=> setTab('market')}
-                    className={`px-6 font-bold ${tab === 'market' ? 'bg-[#4a6d31]' : 'bg-muted text-foreground'}`}>
+                    className={`px-6 font-bold ${tab === 'market'}`}>
                         <Leaf className='mr-2 h-4 w-4'/>Marketplace
                 </Button>
 
                 <Button onClick={()=> setTab('orders')}
-                    className={`px-6 font-bold ${tab === 'orders' ? 'bg-[#4a6d31]' : 'bg-muted text-foreground'}`}>
+                    className={`px-6 font-bold ${tab === 'orders'}`}>
                         <Leaf className='mr-2 h-4 w-4'/>My Orders
                 </Button>
             </div>
@@ -76,17 +73,17 @@ export default function Marketplace(){
                                     className='object-cover w-full h-full'
                                     alt={item.name}  loading='lazy'/>
                                 </div>
-                                <CardHeader className='p-5 border-b bg-muted/30'>
+                                <CardHeader className='p-3 border-b bg-muted/30'>
                                     <div className='flex justify-between items-start gap-2'>
                                         <CardTitle className='text-lg font-bold truncate leading-tight'>
                                             {item.name}
                                         </CardTitle>
-                                        <Badge variant='outline' 
+                                        <div variant='outline' 
                                         className='shrink-0'
-                                        >KSH {item.price}</Badge>
+                                        >KSH {item.price}</div>
                                     </div>
                                 </CardHeader>
-                                <CardContent className='p-5 space-y-3'>
+                                <CardContent className='p-5 space-y-2'>
                                     <div className='text-sm space-y-1'>
                                         <p><span className='text-muted-foreground font-semibold uppercase text-[10px] tracking-wider'>Farmer: </span> {item.farmer_name}</p>
                                         <p><span className='text-muted-foreground font-semibold uppercase text-[10px] tracking-wider'>Available: </span> {item.quantity} KG</p>
@@ -118,7 +115,47 @@ export default function Marketplace(){
 
             {/*Orders Tab */}
             
-            
+            {tab === 'orders' &&(
+            <Card className='border-border bg-card shadow-lg'>
+                <CardHeader className='border =b bg-muted/30'>
+                    <CardTitle className='text-center text-xl'>Purchase order History</CardTitle>
+                </CardHeader>
+
+                <CardContent className='p-0'>
+                    <div className='divide-y divide-border'>
+                        {orders.map((order) => (
+                            <div key={order.id} className='p-4 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 hover:bg-muted/10'>
+                                <div className='text-center md:text-left'>
+                                    <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Order # {order.id}</p>
+                                    <p className='text-lg font-medium'>{order.produce_name || order.produce_details?.name}</p>
+                                </div>
+
+                                <div className='flex gap-8'>
+                                    <div className='text-center'>
+                                        <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Quantity</p>
+                                        <p className='font-medium'>{order.quantity}</p>
+                                    </div>
+                                    <div className='text-center'>
+                                        <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Amount</p>
+                                        <p className='font-medium'>{order.total_amount || 0}</p>
+                                    </div>
+
+                                </div>
+                                    <Badge variant={order.status === 'pending' ? 'secondary' : 'default'}
+                                    className='px-4 py-1'
+                                    >
+                                        {order.status.toUpperCase()}
+                                    </Badge>
+                                </div>
+                            
+                            ))}
+                        {orders.length === 0 && (
+                            <div className='p-20 text-center text-muted-foreground'>No Orders placed</div>
+                        )}
+                    </div>
+                </CardContent>
+            </Card>
+            )} 
         </div>
     )
 }
