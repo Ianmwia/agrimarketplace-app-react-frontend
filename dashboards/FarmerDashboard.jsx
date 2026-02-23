@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 import ProduceForm from './farmerspages/ProduceForm'
-// import ProduceList from ''
-// import OrdersList from ''
-// import ReportForm from ''
+import ProduceList from './farmerspages/ProduceList'
+import OrdersList from './farmerspages/OrdersList'
+import ReportForm from './farmerspages/ReportForm'
 import { useState } from 'react';
 
-export default function FarmerDashboardNew(){
+export default function FarmerDashboard(){
     const [tab, setTab] = useState('produce')
 
     return(
@@ -21,28 +21,42 @@ export default function FarmerDashboardNew(){
                 className={`px-6 font-bold ${tab === "produce"
                     }`}
                 >
-                    My Produce
+                    Create Produce
+                </Button>
+
+                <Button
+                onClick={()=> setTab('produce-list')}
+                className={`px-6 font-bold ${tab === "produce-list"
+                    }`}
+                >
+                    View Your Produce
                 </Button>
                 <Button
-                onClick={()=> setTab('produce')}
-                className={`px-6 font-bold ${tab === "produce"
+                onClick={()=> setTab('orders')}
+                className={`px-6 font-bold ${tab === "orders"
                     }`}
                 >
                     Orders
                 </Button>
                 <Button
-                onClick={()=> setTab('produce')}
-                className={`px-6 font-bold ${tab === "produce"
+                onClick={()=> setTab('report')}
+                className={`px-6 font-bold ${tab === "report"
                     }`}
                 >
                     File A report
                 </Button>
-                
+            </div>
+
                 {/*produce tab */}
+            <div className='mt-5'>
                 {tab === 'produce' && (
                     <div className='space-y-10'>
                         <ProduceForm/>
-                        {/* <ProduceList/> */}
+                    </div>
+                )}
+                {tab === 'produce-list' && (
+                    <div className='space-y-10'>
+                        <ProduceList/>
                     </div>
                 )}
 
