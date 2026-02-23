@@ -4,6 +4,7 @@ import API from '@/api'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from 'lucide-react'
 
 export default function OrdersList(){
     const [orders, setOrders] = useState([])
@@ -68,9 +69,44 @@ export default function OrdersList(){
                             <p className='text-lg font-medium'>{order.buyer_first_name} {order.buyer_last_name}</p>
                         </div>
 
+                        {/*status */}
+                        <div className=' flex gap-3 flex-wrap justify-center'>
+                            <Badge fontVariant={order.status === 'pending'
+                                ? "secondary"
+                                : order.status === "accepted"
+                                ? "default"
+                                : "destructive"
+                            }
+                            className='px-4 py-1'>
+                                {order.status.toUpperCase()}
+                            </Badge>
+
+                            {order.status === 'pending' && (
+                                <div>
+                                    <Button size='sm'
+                                    onClick={()=> acceptOrder(order.id)}
+                                    >
+                                        Accept
+                                    </Button>
+
+                                    <Button size='sm'
+                                    variant='destructive'
+                                    onClick={()=> setSelectOrder(order.id)}
+                                    >
+                                        Reject
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+
 
                     </div>
                 ))}
+
+                {/*empty state*/}
+                {orders.length === 0 && (
+                    <div className='p-20 text-center text-muted-foreground'>No Orders yet</div>
+                )}
 
             </div>
         </CardContent>
