@@ -6,6 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
+
 
 export default function ReportForm(){
 
@@ -14,7 +17,20 @@ export default function ReportForm(){
     const [description, setDescription] = useState('')
     const [assignedTo, setAssignedTo] = useState('')
 
-    
+    useEffect(()=>{
+        const fetchOfficers = async (e) => {
+
+        try {
+            const res = await API.get('produce/')
+            const data = res.data.officers || []
+            setOfficers(data)
+            
+        } catch (error) {
+            toast.error('Could Not load Officers List')
+        }    
+    }
+        fetchOfficers();
+    }, [])
     
     const createReport = async (e) => {
         e.preventDefault()
@@ -40,10 +56,20 @@ export default function ReportForm(){
 
 
     return(
-        <div>
+        <div className='max-w-3xl mx-auto space-y-6'>
+            <div>
+                <h2 className='tex-2xl font-bold tracking-tight'>Contact Field Officer</h2>
+                <p className='text-muted-foreground text-sm mt-1'>Submit A report Request and a Filed Officer Will Assist You</p>
+            </div>
+
+            <Separator/>
+           
+
             <form action="" encType='multipart/form-data' onSubmit={createReport} className='space-y-5'>
-                <Input name='title' type='text' placeholder='title of message' onChange={(e)=> setTitle(e.target.value)} required/>
+                <Label>Title</Label>
+                <Input name='title' type='text' placeholder='Title' onChange={(e)=> setTitle(e.target.value)} required/>
                 
+                 <Label>Field Officer</Label>
                 <Select key={officers.length} onValueChange={setAssignedTo} value={assignedTo}>
                     <SelectTrigger>
                         <SelectValue placeholder='select field officer'/>
@@ -53,11 +79,12 @@ export default function ReportForm(){
                             <SelectItem
                             key={officer.id}
                             value={officer.id.toString()}
-                            >{officer.first_name}</SelectItem>
+                            >{officer.first_name} {officer.last_name}</SelectItem>
                         ))}
 
                     </SelectContent>
                 </Select>
+                 <Label>Description</Label>
                 <Textarea placeholder='enter a description' onChange={(e)=> setDescription(e.target.value)}/>
 
                 <div className='md:cols-span-2 mt-5'>
