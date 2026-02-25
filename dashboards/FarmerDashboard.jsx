@@ -6,6 +6,7 @@ import ProduceForm from './farmerspages/ProduceForm'
 import ProduceList from './farmerspages/ProduceList'
 import OrdersList from './farmerspages/OrdersList'
 import ReportForm from './farmerspages/ReportForm'
+import FarmerViewReport from './farmerspages/FarmerViewReports';
 import { useState } from 'react';
 
 export default function FarmerDashboard(){
@@ -45,6 +46,13 @@ export default function FarmerDashboard(){
                 >
                     File A report
                 </Button>
+                <Button
+                onClick={()=> setTab('report-created')}
+                className={`px-6 font-bold ${tab === "report-created"
+                    }`}
+                >
+                    View Reports Created
+                </Button>
             </div>
 
                 {/*produce tab */}
@@ -64,6 +72,8 @@ export default function FarmerDashboard(){
                 {tab === 'orders' && <OrdersList/>}
                 {/*report tab */}
                 {tab === 'report' && <ReportForm/>}
+                {/*let farmer view reports created */}
+                {tab === 'report-created' && <FarmerViewReport/>}
 
             </div>
         </div>
