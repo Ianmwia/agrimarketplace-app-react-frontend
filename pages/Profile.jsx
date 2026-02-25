@@ -37,13 +37,15 @@ export default function Profile(){
         const handleUpdate = async (e) => {
             e.preventDefault();
 
-            const formData = new FormData(e.target);
+            const formData = new FormData(e.currentTarget);
 
             try {
-                await API.post('accounts/profile', formData);
+                await API.post('profile/', formData);
                 setIsEditing(false);
                 fetchProfile();
+                toast.success('Profile Updated successfully');
             } catch (error) {
+                console.error(error.response?.data);
                 toast.error('Update failed');
             }
 
@@ -115,7 +117,50 @@ export default function Profile(){
 
                         </div>
                     ): (
-                        <form action=""></form>
+                        <form onSubmit={handleUpdate} encType='multipart/form-data' className='space-y-8'>
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                                {/*image upload */}
+                                <div className='md:col-span-2 space-y-2 border-b pb-6'>
+                                    <Label className="text-xs font-bold uppercase text-muted-foreground">Profile Picture</Label>
+                                    <Input type='file' name='image' className='cursor-pointer file:text-primary file:font-semibold bg-background'/>
+                                </div>
+
+                                <div className='space-y-2'>
+                                    <Label className="text-xs font-bold uppercase text-muted-foreground">First Name</Label>
+                                    <Input  defaultValue={user?.first_name} name='first_name' className='bg-background'/>
+                                </div>
+
+                                <div className='space-y-2'>
+                                    <Label className="text-xs font-bold uppercase text-muted-foreground">Last Name</Label>
+                                    <Input  defaultValue={user?.last_name} name='last_name' className='bg-background'/>
+                                </div>
+
+                                <div className='space-y-2'>
+                                    <Label className="text-xs font-bold uppercase text-muted-foreground">Phone</Label>
+                                    <Input  defaultValue={user?.phone} name='phone' className='bg-background'/>
+                                </div>
+
+                                <div className='space-y-2'>
+                                    <Label className="text-xs font-bold uppercase text-muted-foreground">Location</Label>
+                                    <Input  defaultValue={user?.location} name='location' className='bg-background'/>
+                                </div>
+
+                            </div>
+
+                            <div className='flex flex-col md:flex-row items-center gap-4 pt-4'>
+                                <Button type='submit' className='w-full md:w-auto px-10'>
+                                    Update
+                                </Button>
+
+                                {/*cancel button */}
+                                <Button type='button' variant='outline'
+                                    onClick={()=> setIsEditing(false)}
+                                    className='w-full md:w-auto px-10'
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                        </form>
                     )}
                 </CardContent>
             </Card>    
