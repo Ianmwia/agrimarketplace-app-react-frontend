@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import API from '../src/api';
 
+import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
+
 export default function SignUp(){
     const [formData, setFormData] = useState({
         first_name: "",
@@ -47,10 +50,12 @@ export default function SignUp(){
         try {
             await API.post('register/', formData);
             {/*alert */}
-            alert('account created successfully')
+            //alert('account created successfully')
+            //toast sonner
+            toast.success('Account Created Successfully')
             {/*redirect */}
             {/*clear formdata */}
-            setFormData([])
+            setFormData({})
 
         } catch (error) {
             if (error.response && error.response.data) {
@@ -61,33 +66,35 @@ export default function SignUp(){
         }
     };
 
+    const ringGlow = 'bg-background border border-input text-foreground rounded-lg w-full p-2.5 outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all'
+
     return(
         <div className='p-2 flex min-h-screen items-center justify-center'>
-        <div className='w-full m-2 md:w-1/2 lg:w-3/7 flex flex-col p-2 space-y-2 md:space-x-2 lg:py-0 bg-gray-50 rounded-lg shadow'>
+        <div className='w-full m-2 md:w-1/2 lg:w-3/7 flex flex-col p-2 space-y-2 md:space-x-2 lg:py-0 bg-card border-border rounded-lg shadow'>
             <div className=''>
                 <p className='text-xl font-bold text-center leading-tight tracking-tight p-2'>Create an account</p>
             </div>
             <form className='p-3 space-y-4' action="" onSubmit={handleSubmit}>
                 { errors.non_field_errors && (
-                    <p className='text-red-600 text-sm text-center mb-2'>{errors.non_field_errors}</p>
+                    <p className='text-destructive text-sm text-center mb-2'>{errors.non_field_errors}</p>
                 )}
                 <div>
-                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="text" name="first_name" placeholder="first name" onChange={handleChange} />
+                    <input className={ringGlow} type="text" name="first_name" placeholder="first name" onChange={handleChange} />
                 </div>
                 <div>
-                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="text" name="last_name" placeholder="last name" onChange={handleChange} />
+                    <input className={ringGlow} type="text" name="last_name" placeholder="last name" onChange={handleChange} />
                 </div>
                 <div>
-                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="email" name="email" placeholder="email" onChange={handleChange} required autoComplete='email' />
+                    <input className={ringGlow} type="email" name="email" placeholder="email" onChange={handleChange} required autoComplete='email' />
                 </div>
                 <div>
                     {errors.password && (
-                        <p className='text-red-600 text-sm text-center mb-2'>{errors.password?.[0]}</p>
+                        <p className='text-destructive text-sm text-center mb-2'>{errors.password?.[0]}</p>
                     ) }
-                    <input className={`bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5 ${errors.password ? 'border-red-500': 'border-gray-300'}`} type="password" name="password" placeholder="password" onChange={handleChange} required autoComplete='new-password'/>
+                    <input className={`${ringGlow} ${errors.password ? 'border-destructive': 'border-input'}`} type="password" name="password" placeholder="password" onChange={handleChange} required autoComplete='new-password'/>
                 </div>
                 <div>
-                    <select className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' name="role" value={formData.role} onChange={handleChange}>
+                    <select className={ringGlow} name="role" value={formData.role} onChange={handleChange}>
                         <option value="">Select Role</option>
                         {roleOptions.map((r)=> (
                             <option key={r} value={r}>{r}</option>
@@ -96,7 +103,7 @@ export default function SignUp(){
                 </div>
                 <div>
                     {formData.role === 'field_officer' && (
-                    <select className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' name="field" value={formData.field} onChange={handleChange}>
+                    <select className={ringGlow} name="field" value={formData.field} onChange={handleChange}>
                         <option value="">Select Field</option>
                         {fieldOptions.map((f)=> (
                             <option key={f} value={f}>{f}</option>
@@ -106,14 +113,14 @@ export default function SignUp(){
                 </div>
 
                 <div>
-                    <input className='bg-gray-50 border border-gray-300 text-gray-900 rounded-lg w-full p-2.5' type="text" name="location" placeholder="location" onChange={handleChange} />
+                    <input className={ringGlow} type="text" name="location" placeholder="location" onChange={handleChange} />
                 </div>
                 <div>
-                    <button className='bg-green-500 w-full rounded-lg text-white text-[14px] px-5 py-2.5 text-center' type='submit'>Register</button>
+                    <button className='bg-primary w-full rounded-lg text-primary-foreground hover:opacity-90 transition-colors text-[14px] px-5 py-2.5 text-center' type='submit'>Register</button>
                 </div>
             </form>
             <div className='p-2'>
-                <p className='text-sm font-light text-gray-500'>Already have an account? <a href="" className='text-sm font-medium text-green-500'>Register here</a></p>
+                <p className='text-sm font-light text-mutes-foreground'>Already have an account? <Link to='/login' className='text-sm font-medium text-primary'>Login here</Link></p>
             </div>
         </div>
         </div>
