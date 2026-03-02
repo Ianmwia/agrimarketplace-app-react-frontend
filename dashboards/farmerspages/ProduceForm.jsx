@@ -5,12 +5,14 @@ import API from '../../src/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 export default function ProduceForm(){
     const [formData, setFormData] = useState({
         name:'',
-        price:'',
+        price_per_unit:'',
         quantity:'',
+        batch_number: '',
         category: '',
         description: '',
         image: null,
@@ -26,6 +28,15 @@ export default function ProduceForm(){
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if (Number(formData).quantity < 10){
+            toast.error('Quantity must be at least 10kg')
+            return
+        }
+        if (Number(formData).price < 400){
+            toast.error('Price must be above Kes 400 per unit')
+            return
+        }
         
         const data = new FormData();
         Object.keys(formData).forEach((key)=> {
@@ -40,8 +51,9 @@ export default function ProduceForm(){
 
             setFormData({
                 name:'',
-                price:'',
+                price_per_unit:'',
                 quantity:'',
+                batch_number:'',
                 category: '',
                 description: '',
                 image: null,
@@ -59,7 +71,7 @@ export default function ProduceForm(){
         <Card className='border-border bg-card shadow-sm'>
             <CardHeader className='p-5 border-b bg-muted/30'>
             <CardTitle className='text-lg font-bold'>
-                Create New Produce
+                Create Harvest
             </CardTitle>
             </CardHeader>
 
@@ -67,13 +79,39 @@ export default function ProduceForm(){
                 <form action="" encType='multipart/form-data'
                 onSubmit={handleSubmit}
                 className='grid grid-cols-1 md:grid-cols-2 gap-6'
-                >
+                >   
+                    <div className='space-y-2'>
+                    <Label>Produce Name</Label>
                     <Input name='name' type='text' placeholder='Produce Name' onChange={handleChange} required/>
-                    <Input name='price' type='number' placeholder='Price' onChange={handleChange}/>
-                    <Input name='description' type='text' placeholder='Description' onChange={handleChange}/>
+                    </div>
+                    
+                    <div className='space-y-2'>
+                    <Label>Price</Label>
+                    <Input name='price_per_unit' type='number' placeholder='Price - Minimum price Kes 400' min={400} onChange={handleChange}/>
+                    </div>
+                    <div className='space-y-2'>
+                    <Label>Description</Label>
+                    <Input name='description' type='text' placeholder='Description' onChange={handleChange}/>                    
+                    </div>
+                    <div className='space-y-2'>
+                    <Label>Category</Label>
                     <Input name='category' type='text' placeholder='Category' onChange={handleChange}/>
-                    <Input name='quantity' type='number' placeholder='Quantity' onChange={handleChange}/>
+
+                    </div>
+                    <div className='space-y-2'>
+                    <Label>Quantity</Label>
+                    <Input name='quantity' type='number' placeholder='Quantity - Minimum Amount 10KG' min={10} onChange={handleChange}/>
+                    </div>
+
+                    <div className='space-y-2'>
+                    <Label>Batch Number</Label>
+                    <Input name='batch_number' type='number' placeholder='Batch Number' onChange={handleChange}/>
+                    </div>
+
+                    <div className='space-y-2'>
+                    <Label>Image</Label>
                     <Input name='image' type='file'  onChange={handleChange}/>
+                    </div>
                 
                 <div className='md:cols-span-2 mt-5'>
                     <Button className='w-full'>
