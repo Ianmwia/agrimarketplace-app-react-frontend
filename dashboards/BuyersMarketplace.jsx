@@ -19,8 +19,9 @@ export default function Marketplace(){
     const fetchMarketData = async () => {
         try {
             const res = await API.get('order/');
-            setProducts(res.data.available_produce || []);
+            setProducts(res.data.available_batches || []);
             setOrders(res.data.orders || []);
+            console.log(res.data)
         } catch (error) {
             toast.error('Failed to fetch data')
         }
@@ -31,15 +32,18 @@ export default function Marketplace(){
     },[]);
 
     const handlePlaceOrder = async (product) => {
-        const quantity = orderQuantity[product.id] || 1;
+        const quantity = parseInt(orderQuantity[product.id]) || 1;
+        const price = parseFloat(product.price_per_unit) || 0
+        const totalAmount = quantity * price
 
         try {
             await API.post('order/', {
-                produce: product.id,
+                batch: product.id,
                 quantity: quantity,
                 //status: 'pending'
             });
-            toast.success(`Order for ${product.name} placed, you ordered ${quantity} Units`);
+            toast.success(`Order for ${product.produce_name} placed, you ordered ${quantity} Units, Total Amount is Ksh ${totalAmount}`);
+            fetchMarketData()
         } catch (error) {
             toast.error('Error placing an order')
             console.log(error.response?.data?.detail)            
@@ -53,7 +57,7 @@ export default function Marketplace(){
             <div className='flex justify-center gap-4 mb-10'>
                 <Button onClick={()=> setTab('market')}
                     className={`px-6 font-bold ${tab === 'market'}`}>
-                        <Leaf className='mr-2 h-4 w-4'/>Marketplace
+                        <ShoppingCart className='mr-2 h-4 w-4'/>Marketplace
                 </Button>
 
                 <Button onClick={()=> setTab('orders')}
@@ -69,23 +73,25 @@ export default function Marketplace(){
                         <Card key={item.id} 
                             className='border-border bg-card shadow-sm hover:shadow-md transition:shadow'>
                                 <div className='aspect-square bg-muted overflow-hidden rounded-t-lg'>
-                                    <img src={item.image} 
+                                    <img src={item.produce_image} 
                                     className='object-cover w-full h-full'
-                                    alt={item.name}  loading='lazy'/>
+                                    alt={item.produce__name}  loading='lazy'/>
                                 </div>
                                 <CardHeader className='p-3 border-b bg-muted/30'>
                                     <div className='flex justify-between items-start gap-2'>
                                         <CardTitle className='text-lg font-bold truncate leading-tight'>
-                                            {item.name}
+                                            <div>
+                                                <p>{item.produce_name}</p>
+                                            </div>
                                         </CardTitle>
                                         <div variant='outline' 
                                         className='shrink-0'
-                                        >KSH {item.price}</div>
+                                        >KSH {item.price_per_unit}</div>
                                     </div>
                                 </CardHeader>
                                 <CardContent className='p-5 space-y-2'>
                                     <div className='text-sm space-y-1'>
-                                        <p><span className='text-muted-foreground font-semibold uppercase text-[10px] tracking-wider'>Farmer: </span> {item.farmer_name}</p>
+                                        <p><span className='text-muted-foreground font-semibold uppercase text-[10px] tracking-wider'>Farmer: </span> {item.farmer_first_name} {item.farmer_last_name}</p>
                                         <p><span className='text-muted-foreground font-semibold uppercase text-[10px] tracking-wider'>Available: </span> {item.quantity} KG</p>
                                     </div>
 
@@ -137,7 +143,11 @@ export default function Marketplace(){
                                     </div>
                                     <div className='text-center'>
                                         <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Amount</p>
-                                        <p className='font-medium'>{order.total_amount || 0}</p>
+                                        <p className='font-medium'>{order.total_price || 0}</p>
+                                    </div>
+                                    <div className='text-center'>
+                                        <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Status</p>
+                                        <p className='font-medium'>{order.status}</p>
                                     </div>
 
                                 </div>
