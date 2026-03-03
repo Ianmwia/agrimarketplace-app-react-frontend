@@ -1,9 +1,10 @@
 {/* create the api helper */}
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: "http://localhost:8000/api/",
+    baseURL: baseURL,
     withCredentials: true,
 });
 
@@ -17,14 +18,16 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
 }
 
 API.interceptors.request.use(async (config) => {
     if (['post', 'put', 'patch', 'delete'].includes(config.method)) {
         let csrfToken = getCookie('csrftoken');
 
-        if (csrfToken){
-            await axios.get('http://localhost:8000/api/csrf/', { withCredentials: true });
+        //if (!) do not call always just when no token is available
+        if (!csrfToken){
+            await axios.get(`${baseURL}csrf/`, { withCredentials: true });
             csrfToken = getCookie('csrftoken');
         }
 
