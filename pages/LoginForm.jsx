@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import API from '../src/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/useAuth';
 
 import { Toast } from 'radix-ui';
 import { toast } from 'sonner';
@@ -8,6 +9,8 @@ import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 
 export default function Login(){
+    const {setUser} = useAuth()
+
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -32,7 +35,9 @@ export default function Login(){
         e.preventDefault();
 
          try {
-        const res = await API.post('login/', formData);
+            const res = await API.post('login/', formData);
+            setUser(res.data)
+
             const userRole = res.data.role
             {/*alert */}
             //alert('Logged In Successfully')
