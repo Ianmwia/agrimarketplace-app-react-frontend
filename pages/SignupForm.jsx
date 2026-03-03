@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import API from '../src/api';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/useAuth';
 
 export default function SignUp(){
     const [formData, setFormData] = useState({
@@ -14,10 +16,12 @@ export default function SignUp(){
         field: "",
         location: "",
     });
+    const {setUser} = useAuth()
 
     const [errors, setErrors] = useState({})
     const [roleOptions, setRoleOptions] = useState([])
     const [fieldOptions, setFieldOptions] = useState([])   
+    const navigate = useNavigate()
 
     useEffect(()=> {
         API.get("user-choices").then(res=> {
@@ -48,7 +52,11 @@ export default function SignUp(){
 
 
         try {
-            await API.post('register/', formData);
+            const res = await API.post('register/', formData);
+            //log the user in
+            setUser(res.data)
+
+            const userRole = res.data.role
             {/*alert */}
             //alert('account created successfully')
             //toast sonner
@@ -56,6 +64,16 @@ export default function SignUp(){
             {/*redirect */}
             {/*clear formdata */}
             setFormData({})
+            {/*redirect navigate */}
+            if (userRole === 'farmer'){
+                navigate('/farmer')
+            } else if (userRole === 'field_officer'){
+                navigate('/field_officer')
+            } else if (userRole === 'buyer'){
+                navigate('/market')
+            } else {
+            navigate('/profile') //fallback default
+            }
 
         } catch (error) {
             if (error.response && error.response.data) {
@@ -120,7 +138,7 @@ export default function SignUp(){
                 </div>
             </form>
             <div className='p-2'>
-                <p className='text-sm font-light text-mutes-foreground'>Already have an account? <Link to='/login' className='text-sm font-medium text-primary'>Login here</Link></p>
+                <p className='text-sm font-light text-muted-foreground'>Already have an account? <Link to='/login' className='text-sm font-medium text-primary'>Login here</Link></p>
             </div>
         </div>
         </div>
