@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Toaster} from './components/ui/sonner'
+import { Toaster} from '@components/ui/sonner'
 import Login from '../pages/LoginForm'
 import SignUp from '../pages/SignupForm'
 import Navbar from '../components/Navbar'
