@@ -10,9 +10,8 @@ import Profile from '../pages/Profile'
 import Marketplace from '../dashboards/BuyersMarketplace'
 import FarmerDashboard from '../dashboards/FarmerDashboard'
 import ViewReport from '../dashboards/fieldofficerspages/ViewReport'
-import { AuthProvider } from './context/AuthContext'
+import { AuthProvider } from './context/AuthProvider'
 import ProtectedRoute from './routes/ProtectedRoute'
-import ChatApp from '../chat/ChatApp'
 
 import Chat from '../chat/ChatBoard'
 
