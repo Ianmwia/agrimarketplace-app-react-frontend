@@ -30,7 +30,6 @@ function App() {
             <Route path='' element={<Home/>}/>
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/thread' element={<Chat/>}/>
-            <Route path='/chat/:threadId' element={<ChatApp/>}/>
         
         <Route path='/farmer' element={
           <ProtectedRoute allowedRoles={['farmer']}>
