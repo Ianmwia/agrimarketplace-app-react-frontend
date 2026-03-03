@@ -1,5 +1,5 @@
 {/* create the api helper */}
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+const baseURL = import.meta.env.VITE_API_BASE_URL|| "http://localhost:8000/api/";
 
 import axios from 'axios';
 
@@ -27,11 +27,21 @@ API.interceptors.request.use(async (config) => {
 
         //if (!) do not call always just when no token is available
         if (!csrfToken){
-            await axios.get(`${baseURL}csrf/`, { withCredentials: true });
-            csrfToken = getCookie('csrftoken');
+            try{
+                await API.get('csrf/')
+                csrfToken = getCookie('csrftoken')
+            }catch (error){
+                console.error("csrf fetch failed", error)
+            }
+            // await axios.get(`${baseURL}csrf/`, { withCredentials: true });
+            // csrfToken = getCookie('csrftoken');
+
+        }
+        if (csrfToken){
+            config.headers['X-CSRFToken'] = csrfToken
         }
 
-        config.headers['X-CSRFToken'] = csrfToken;
+        //config.headers['X-CSRFToken'] = csrfToken;
     }
     return config;
 });
