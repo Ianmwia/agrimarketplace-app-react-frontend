@@ -1,17 +1,25 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Toaster } from './components/ui/sonner'
+import { Toaster} from '../src/components/ui/sonner'
 import Login from '../pages/LoginForm'
 import SignUp from '../pages/SignupForm'
 import Navbar from '../components/Navbar'
 import Layout from './components/layout'
 import Home from '../pages/Home'
 import Profile from '../pages/Profile'
-import FarmerDashboard from '../dashboards/Farmer'
+import Marketplace from '../dashboards/BuyersMarketplace'
+import FarmerDashboard from '../dashboards/FarmerDashboard'
+import ViewReport from '../dashboards/fieldofficerspages/ViewReport'
+import { AuthProvider } from './context/AuthContext'
+import ProtectedRoute from './routes/ProtectedRoute'
+import ChatApp from '../chat/ChatApp'
+
+import Chat from '../chat/ChatBoard'
 
 function App() {
 
   return (
+    <AuthProvider>
     <BrowserRouter>
     <Toaster position='top-right'/>
       <Routes>
@@ -19,12 +27,31 @@ function App() {
         <Route path='/signup' element={<SignUp/>} />
         {/*navbar routes */}
         <Route element={<Layout />}>
-        <Route path='/home' element={<Home/>}/>
-        <Route path='/profile' element={<Profile/>}/>
-        <Route path='/farmer' element={<FarmerDashboard/>}/>
+
+            <Route path='' element={<Home/>}/>
+            <Route path='/profile' element={<Profile/>}/>
+            <Route path='/thread' element={<Chat/>}/>
+            <Route path='/chat/:threadId' element={<ChatApp/>}/>
+        
+        <Route path='/farmer' element={
+          <ProtectedRoute allowedRoles={['farmer']}>
+            <FarmerDashboard/> 
+          </ProtectedRoute> }/>
+
+        <Route path='/market' element={
+          <ProtectedRoute allowedRoles={['buyer']}>
+            <Marketplace/> 
+          </ProtectedRoute> }/>
+
+        <Route path='/field_officer' element={
+          <ProtectedRoute allowedRoles={['field_officer']}>
+            <ViewReport/> 
+          </ProtectedRoute> }/>
+
         </Route>
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   )
 }
 
