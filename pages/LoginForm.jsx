@@ -32,13 +32,22 @@ export default function Login(){
         e.preventDefault();
 
          try {
-            await API.post('login/', formData);
+        const res = await API.post('login/', formData);
+            const userRole = res.data.role
             {/*alert */}
             //alert('Logged In Successfully')
             //toast
             toast.success('Logged in Successfully')
             {/*redirect navigate */}
-            navigate('/profile')
+            if (userRole === 'farmer'){
+                navigate('/farmer')
+            } else if (userRole === 'field_officer'){
+                navigate('/field_officer')
+            } else if (userRole === 'buyer'){
+                navigate('/market')
+            } else {
+            navigate('/profile') //fallback default
+            }
 
         } catch (error) {
             
