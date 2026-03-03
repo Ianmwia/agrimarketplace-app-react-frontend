@@ -29,11 +29,11 @@ export default function ProduceForm(){
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (Number(formData).quantity < 10){
+        if (Number(formData.quantity) < 10){
             toast.error('Quantity must be at least 10kg')
             return
         }
-        if (Number(formData).price < 400){
+        if (Number(formData.price) < 400){
             toast.error('Price must be above Kes 400 per unit')
             return
         }
@@ -46,7 +46,7 @@ export default function ProduceForm(){
         })
 
         try {
-            await API.post('produce/', data);
+            await API.post('produce/produce/', data);
             toast.success('produce created successfully');
 
             setFormData({
@@ -59,7 +59,7 @@ export default function ProduceForm(){
                 image: null,
                 });
                 
-        } catch (error) {
+        } catch {
             toast.error('Failed to create produce')
         }
 
