@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 export default function Home(){
 return(
 <div className='flex flex-col'>
-    <div className='min-h-screen bg-[linear-gradient(1deg,rgba(42,123,155,0.37)_0%,_rgba(242,242,242,1)_46%)] dark:bg-none dark:bg-background flex flex-col justify-center items-center p-6 text-center'>
+    <div className='min-h-screen bg-[linear-gradient(1deg,rgba(42,123,155,0.37)_0%,rgba(242,242,242,1)_46%)] dark:bg-none dark:bg-background flex flex-col justify-center items-center p-6 text-center'>
         <div className='flex items-center justify-center px-6' >
             <div className='max-w-4xl text-center space-y-6'>
             <p className='text-4xl md:text-5xl lg:text-6xl font-bold tracking -tight '>Revolutionize Your Agricultural Value Chain with Kilimo</p>
