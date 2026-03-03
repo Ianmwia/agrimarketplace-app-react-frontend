@@ -11,12 +11,14 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose 
 import { useState } from 'react';
 import { toast } from 'sonner';
 import API from '../src/api';
-
+import { useAuth } from '@/context/useAuth';
 
 export default function Navbar(){
     const {theme, setTheme} = useTheme()
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
+
+    const {user} = useAuth()
 
     {/*group nav actions for sheet dropdown */}
     const NavActions = ({isMobile}) => {
@@ -44,10 +46,11 @@ export default function Navbar(){
                 </Button>   
 
                 {/*dropdown */}
+            {user && (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='relative h-8 w-8 rounded-full p-0'>
-                            <Avatar className='h-10 w-10 ml-2'>
+                        <Button variant='ghost' className='relative h-10 w-10 rounded-full p-0'>
+                            <Avatar className='h-10 w-10'>
                                 <AvatarImage src=''/>
                                 <AvatarFallback>JD</AvatarFallback>
                             </Avatar>
@@ -67,13 +70,14 @@ export default function Navbar(){
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+            )}
                     
             </div>
         )
     }
 
     return(
-        <header className='bg-green-500 dark:bg-green-900 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
+        <header className='dark:bg-green-900 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
             <div className='container mx-auto flex h-16 items-center justify-between px-4'>
             {/*brand web name */}
             <div>
@@ -82,9 +86,19 @@ export default function Navbar(){
 
             {/*nav for links */}
             <nav className='hidden md:flex items-center gap-8 text-sm font-medium'>
-                <Link to='/home' className='text-muted-foreground hover:text-foreground'>Home</Link>
-                <Link to='/market' className='text-muted-foreground hover:text-foreground'>Market</Link>
-                <Link to='/farmer' className='text-muted-foreground hover:text-foreground'>Farmer</Link>
+                <Link to='' className='text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full'>Home</Link>
+                {user?.role === 'buyer' && 
+                <Link to='/market' className='text-foreground'>Market</Link>
+                }
+                {user?.role === 'farmer' &&
+                <Link to='/farmer' className='text-foreground'>Farmer</Link>
+                }
+                {user?.role === 'field_officer' &&
+                <Link to='/field_officer' className='text-foreground'>Field Officer Reports</Link>
+                }
+                
+                <Link to='/thread' className='text-foreground'>Chat</Link>
+                
             </nav>
 
             {/*theme toggle */}
@@ -111,9 +125,26 @@ export default function Navbar(){
                         <SheetClose asChild>
                             <Link to='/home' className='text-2xl font-semibold'>Home</Link>                        
                         </SheetClose>
+                        {user?.role === 'farmer' && (
+                        <SheetClose asChild>
+                            <Link to='/farmer' className='text-2xl font-semibold'>Farmer</Link>                        
+                        </SheetClose>
+                        )}
+                        {user?.role === 'buyer' &&(
+                        <SheetClose asChild>
+                            <Link to='/market' className='text-2xl font-semibold'>Marketplace</Link>                        
+                        </SheetClose>
+                        )}
+                        {user?.role === 'field_officer' &&(
+                        <SheetClose asChild>
+                            <Link to='/field_officer' className='text-2xl font-semibold'>Field Officer Reports</Link>                        
+                        </SheetClose>
+                        )}
+                        {user &&(
                         <SheetClose asChild>
                             <Link to='/profile' className='text-2xl font-semibold'>Profile</Link>                        
                         </SheetClose>
+                        )}
 
                         <NavActions isMobile/>
 
