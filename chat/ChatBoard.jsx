@@ -90,9 +90,9 @@ export default function Chat(){
     return(
         <div className='flex h-[85vh] bg-background border rounded-2xl overflow-hidden m-6 shadow-xl'>
             {/*sidebar */}
-            <div>
-                <div>
-                    <h2>
+            <div className='w-80 border-r flex flex-col bg-muted/20 shrink-0 h-full'>
+                <div className='p-5 border-b flex items-center justify-between bg-background shrink-0'>
+                    <h2 className='text-xl font-bold text-primary tracking-tight'>
                         Kilimo Chat
                     </h2>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -138,8 +138,8 @@ export default function Chat(){
                             <AvatarFallback>U</AvatarFallback>
                             </Avatar>
                             <div className='flex-1 min-w-0'>
-                                <p>{other.name}</p>
-                                <p>{other.role}</p>
+                                <p className='font-semibold text-sm truncate'>{other.name}</p>
+                                <p className='text-[10px] uppercase tracking-tight'>{other.role}</p>
                             </div>
                         </div>
                             
