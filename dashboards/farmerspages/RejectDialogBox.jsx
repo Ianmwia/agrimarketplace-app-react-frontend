@@ -32,7 +32,7 @@ export default function RejectDialog({order, open,setOpen, refresh}){
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Are You Sure You Want to reject Order #{order.id} for {order.produce_name} placed by {order.buyer_first_name}{order.buyer_last_name}?
+                        Are You Sure You Want to reject Order #{order.id} for {order.produce_name} placed by {order.buyer_first_name}  {order.buyer_last_name}?
                     </DialogTitle>
                 </DialogHeader>
                 <div>
