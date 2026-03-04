@@ -153,7 +153,7 @@ export default function Chat(){
             <div className='flex-1 flex flex-col h-full bg-background relative overflow-hidden'>
                 {activeThread ? (
                     <>
-                        <header>
+                        <header className='p-4 border-b flex items-center gap-3 bg-card,50 shrink-0'>
                             <Avatar>
                                 <AvatarFallback>U</AvatarFallback>
                             </Avatar>
@@ -202,8 +202,9 @@ export default function Chat(){
                         </div>
 
                         {/*footer content */}
-                        <footer>
+                        <footer className='p-4 border-t bg-background shrink-0 flex gap-2'>
                             <Input
+                            className='flex-q rounded-xl bg-muted/40 border-none h-11'
                             placeholder={`Message ${getOtherParticipant(activeThread).name}...`}
                             value ={text}
                             onChange = {(e)=> setText(e.target.value)}
