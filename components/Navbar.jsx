@@ -101,7 +101,7 @@ export default function Navbar(){
                 <Link to='/field_officer' className='text-foreground'>Field Officer Reports</Link>
                 }
                 
-                <Link to='/thread' className='text-foreground'>Chat</Link>
+                {/*<Link to='/thread' className='text-foreground'>Chat</Link>*/}
                 
             </nav>
 
