@@ -5,11 +5,12 @@ import { useAuth } from '@/context/useAuth';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Avatar, Dialog, DialogContent, DialogTrigger } from 'radix-ui';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem,CommandList } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Dialog, DialogContent,DialogTrigger, DialogHeader,DialogTitle } from '@/components/ui/dialog';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem,CommandList } from '@/components/ui/command'
 import { Send, Plus, Search } from 'lucide-react';
 import { toast } from 'sonner';
-import { AvatarFallback } from '@/components/ui/avatar';
+
 
 export default function Chat(){
     const {user} = useAuth()
