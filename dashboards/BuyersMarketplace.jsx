@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import API from '@/api';
 import { toast } from 'sonner';
 
@@ -16,20 +16,23 @@ export default function Marketplace(){
 
    
 
-    const fetchMarketData = async () => {
+    const fetchMarketData = useCallback(async () => {
         try {
             const res = await API.get('order/');
             setProducts(res.data.available_batches || []);
             setOrders(res.data.orders || []);
             console.log(res.data)
-        } catch (error) {
+        } catch {
             toast.error('Failed to fetch data')
         }
-    };
+    },[]);
     
     useEffect(()=>{
-        fetchMarketData();
-    },[]);
+        const load = async () => {
+            await fetchMarketData()
+        }
+            load();
+    },[fetchMarketData]);
 
     const handlePlaceOrder = async (product) => {
         const quantity = parseInt(orderQuantity[product.id]) || 1;
@@ -49,6 +52,23 @@ export default function Marketplace(){
             console.log(error.response?.data?.detail)            
         }
     };
+
+    //mpesa payment
+    const handleMpesaPayment = async (order) => {
+    try {
+    toast.info("Check your phone for the M-Pesa prompt");
+    const res = await API.post(`order/${order.id}/pay/`);
+
+    if (res.data.CheckoutRequestID) {
+    toast.success("STK Push sent successfully!");
+    // Refresh to show any status changes
+    fetchMarketData();
+    }
+    } catch (error) {
+    toast.error(error.response?.data?.error || "Payment failed to initiate");
+    }
+    };
+
 
 
     return(
@@ -75,7 +95,7 @@ export default function Marketplace(){
                                 <div className='aspect-square bg-muted overflow-hidden rounded-t-lg'>
                                     <img src={item.produce_image} 
                                     className='object-cover w-full h-full'
-                                    alt={item.produce__name}  loading='lazy'/>
+                                    alt={item.produce_name}  loading='lazy'/>
                                 </div>
                                 <CardHeader className='p-3 border-b bg-muted/30'>
                                     <div className='flex justify-between items-start gap-2'>
@@ -150,6 +170,23 @@ export default function Marketplace(){
                                         <p className='font-medium'>{order.status}</p>
                                     </div>
 
+                                </div>
+                                <div className='flex flex-col items-center gap-2'>
+                                    <Badge fontVariant={
+                                        order.status === 'pending' ? 'secondary':
+                                        order.status === 'accepted' ? 'outline':
+                                        order.status === 'paid' ? 'default': 'destructive'
+
+                                    }>
+                                        {order.status.toUpperCase()}
+                                    </Badge>
+                                    {order.status === 'accepted' && (
+                                        <Button
+                                        size='sm'
+                                        className='bg-primary'
+                                        onClick={()=> handleMpesaPayment(order)}
+                                        >Pay Ksh {order.total_price}</Button>
+                                    )}
                                 </div>
                                     <Badge variant={order.status === 'pending' ? 'secondary' : 'default'}
                                     className='px-4 py-1'
