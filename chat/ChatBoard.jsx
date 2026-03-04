@@ -52,7 +52,7 @@ export default function Chat(){
     useEffect(()=>{
         if (!activeThread?.id) return
 
-        const wsUrl = import.meta.env.VITE_WS_BASE_URL
+        const wsUrl = import.meta.env.VITE_WS_URL
 
         const socket = new WebSocket(`${wsUrl}ws/chat/${activeThread.id}/`)
         socketRef.current = socket
@@ -66,10 +66,14 @@ export default function Chat(){
     },[activeThread])
 
     const sendMessage = () => {
-        if (!text.trim() || !socketRef.current) return
+        if (!text.trim() || !socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) {
+            toast.error('Connection not ready, please wait')
+            return
+        }
         socketRef.current.send(JSON.stringify({message: text}))
         setText("")
     }
+
 
     //start a new chat
     const startNewChat = async (targetId) => {
@@ -174,7 +178,7 @@ export default function Chat(){
 
                                 return(
                                     <div key={msg.id || i}
-                                    className={`max-w-[75%]
+                                    className={`flex w-full
                                         ${isMe
                                         ? 'justify-end'
                                         : 'justify-start'
