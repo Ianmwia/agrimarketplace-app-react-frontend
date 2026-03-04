@@ -1,35 +1,40 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import API from '@/api'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from 'lucide-react'
+import RejectDialog from './RejectDialogBox'
 
 export default function OrdersList(){
     const [orders, setOrders] = useState([])
     const [selectOrder, setSelectOrder] = useState(null)
 
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
         try {
             const res = await API.get('order/')
             setOrders(res.data.orders)
-        } catch (error) {
+        } catch {
             toast.error('failed to fetch Orders')
             }    
+        },[])
+        
+        useEffect(()=>{
+        const load = async () => {
+            await fetchOrders()
         }
-    
-        useEffect(()=> {
-                fetchOrders()
-            }, [])
+            load();
+         },[fetchOrders]);
+        
             
             //accept orders
         const acceptOrder = async (id) => {
             try {
-                const res = await API.post(`order/${id}/accept/`)
+                const _res = await API.post(`order/${id}/accept/`)
                     toast.success('order accepted')
                     fetchOrders()
-                } catch (error) {
+                } catch {
                     toast.error('failed to accept order')
                 }    
             }
@@ -82,7 +87,7 @@ export default function OrdersList(){
                             </Badge>
 
                             {order.status === 'pending' && (
-                                <div>
+                                <div className='flex gap-x-2'>
                                     <Button size='sm'
                                     onClick={()=> acceptOrder(order.id)}
                                     >
@@ -110,6 +115,17 @@ export default function OrdersList(){
 
             </div>
         </CardContent>
+
+        {/*reject dialog */}
+        {selectOrder && (
+            <RejectDialog
+            orderId={(selectOrder)}
+            open={true}
+            setOpen={()=> setSelectOrder(null)}
+            refresh={fetchOrders}
+            />
+
+        )}
 
        </Card>
     )

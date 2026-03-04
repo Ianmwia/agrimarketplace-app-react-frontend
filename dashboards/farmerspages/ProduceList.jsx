@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import API from '../../src/api'
 import { toast } from 'sonner'
 
@@ -8,20 +8,24 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 export default function ProduceList(){
     const [produce, setProduce] = useState([])
 
-    const fetchProduce = async () => {
+    const fetchProduce = useCallback(async () => {
         try {
             const res = await API.get('produce/')
             //console.log('data', res.data)
             //console.log('data', res.data.produce_list)
             setProduce(res.data.produce_list || [])
-        } catch (error) {
+        } catch {
             toast.error('failed to load produce')
         }    
-    }
+    },[])
 
-    useEffect(()=> {
-            fetchProduce()
-        }, [])
+    useEffect(()=>{
+        const load = async () => {
+            await fetchProduce()
+        }
+            load();
+    },[fetchProduce]);
+   
 
     return(
         <div className='space-y-4'>

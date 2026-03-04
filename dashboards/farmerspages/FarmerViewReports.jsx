@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import API from '@/api';
 import { toast } from 'sonner';
 
@@ -11,19 +11,22 @@ import { CalendarDays, User, ClipboardList, Clipboard } from 'lucide-react';
 export default function FarmerViewReport(){
     const [reports, setReports] = useState([])
 
-    const fetchReport = async () => {
+    const fetchReport = useCallback(async () => {
         
         try {
             const res = await API.get('report/')
             setReports(res.data.reports || [])
-        } catch (error) {
+        } catch {
             toast.error('Error fetching reports')
         }
-    }
+    },[])
 
     useEffect(()=>{
-        fetchReport()
-    }, [])
+        const load = async () => {
+            await fetchReport()
+        }
+            load();
+    },[fetchReport]);
 
     return(
         <div className='bg-background p-4 md:p-8 lg:p-12'>
