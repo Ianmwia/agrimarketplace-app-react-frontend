@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 //icons
 import { User, Mail, MapPin, Briefcase, LogOut, Loader2, Edit2, X } from 'lucide-react';
@@ -17,22 +17,25 @@ export default function Profile(){
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    const fetchProfile = async () => {
+    const fetchProfile = useCallback(async () => {
         try {
             const res = await API.get('profile/');
             setUser(res.data.serializer || res.data);
 
-        } catch (error) {
+        } catch {
             toast.error("Authentication error")
             navigate('/login')
             
         }
-    };
+        },[navigate]);
 
-        useEffect(()=> {
-            fetchProfile();
-         }, []);
-
+        useEffect(()=>{
+        const load = async () => {
+            await fetchProfile()
+        }
+            load();
+        },[fetchProfile]);
+        
         //update profile
         const handleUpdate = async (e) => {
             e.preventDefault();
