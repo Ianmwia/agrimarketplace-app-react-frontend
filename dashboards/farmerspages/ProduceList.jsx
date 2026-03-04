@@ -4,6 +4,7 @@ import API from '../../src/api'
 import { toast } from 'sonner'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 export default function ProduceList(){
     const [produce, setProduce] = useState([])
@@ -25,6 +26,18 @@ export default function ProduceList(){
         }
             load();
     },[fetchProduce]);
+
+    //delete produce
+    const deleteProduce = async(id) => {
+        if (!confirm("Are You Sure You want to delete this produce")) return
+
+        try {
+            await API.delete(`produce/${id}`)
+            toast.success('produce deleted Successfully')
+        } catch {
+            toast.error('Failed to delete Produce')
+        }
+    }
    
 
     return(
@@ -67,10 +80,10 @@ export default function ProduceList(){
                             </CardHeader>
 
                             <CardContent className='p-5 space-y-1'>
-                                <div className='flex gap-2  justify-between'>
+                                {/* <div className='flex gap-2  justify-between'>
                                     <p className='text-sm text-muted-foreground'>Farmer</p>
                                     <p className='text-lg font-bold'>{item.farmer_name}</p>
-                                </div>
+                                </div> */}
                                 <div className='flex gap-2 justify-between'>
                                     <p className='text-sm text-muted-foreground'>Description:</p>
                                     <p className='text-lg font-bold'>{item.description}</p>
@@ -93,6 +106,12 @@ export default function ProduceList(){
                                                 </div>
                                             </div>
                                         ))}
+                                        <Button
+                                        onClick={()=> deleteProduce(item.id)}
+                                        variant='destructive'
+                                        >
+                                            Delete Produce
+                                        </Button>
                                     </div>
                                 ):(
                                     <p className='text-xl py-8'>No batches Available</p>
