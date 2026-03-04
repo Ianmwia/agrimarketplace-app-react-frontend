@@ -5,10 +5,11 @@ import { useAuth } from '@/context/useAuth';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from 'radix-ui';
+import { Avatar, Dialog, DialogContent, DialogTrigger } from 'radix-ui';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem,CommandList } from 'lucide-react';
 import { Send, Plus, Search } from 'lucide-react';
 import { toast } from 'sonner';
+import { AvatarFallback } from '@/components/ui/avatar';
 
 export default function Chat(){
     const {user} = useAuth()
@@ -88,7 +89,47 @@ export default function Chat(){
 
     return(
         <div className='flex h-[85vh] bg-background border rounded-2xl overflow-hidden m-6 shadow-xl'>
+            {/*sidebar */}
+            <div>
+                <div>
+                    <h2>
+                        Kilimo Chat
+                    </h2>
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button variant="secondary" size='icon'>
+                                <Plus className='h-4 w-4'/>
+                            </Button>
+                        </DialogTrigger>
 
+                        {/*dialogcontent */}
+                        <DialogContent>
+                            <Command>
+                                <CommandInput placeholder="Search Farmers or officers"/>
+                                <CommandList>
+                                    <CommandEmpty>No users found</CommandEmpty>
+                                    <CommandGroup heading="Available Contacts">
+                                        {usersList.map((u) => (
+                                            <CommandItem key={u.id} onSelect={()=> startNewChat(u.id)}>
+                                                <Avatar>
+                                                    <AvatarFallback>U</AvatarFallback>
+                                                </Avatar>
+                                                <div className='flex flex-col'>
+                                                    <span className='font-medium text-sm'>{u.name || `${u.first_name} ${u.last_name}`}</span>
+                                                    <span className='text-[10px] opacity-50'>{u.role}</span>
+                                                </div>
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </DialogContent>
+                    </Dialog>
+                </div>
+
+                {/*another participant */}
+                
+            </div>
         </div>
     )
 }
