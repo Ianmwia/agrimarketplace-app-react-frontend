@@ -12,8 +12,6 @@ const API = axios.create({
 //API.defaults.xsrfCookieName = 'csrftoken';
 //API.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-//memoization
-let memoizedToken = null
 
 {/*add interceptor to get cookies */}
 
@@ -31,14 +29,13 @@ function getCookie(name) {
 
 API.interceptors.request.use(async (config) => {
     if (['post', 'put', 'patch', 'delete'].includes(config.method?.toLocaleLowerCase())) {
-        let csrfToken = getCookie('csrftoken') || memoizedToken;
+        let csrfToken = getCookie('csrftoken')
 
         //if (!) do not call always just when no token is available
         if (!csrfToken){
             try{
-                const response = await API.get('csrf/')
+                const response = await API.get(`${baseURL}/csrf`, {withCredentials:true})
                 csrfToken = response.data.csrfToken
-                memoizedToken = csrfToken
             }catch (error){
                 console.error("csrf fetch failed", error)
             }
