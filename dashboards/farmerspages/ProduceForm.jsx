@@ -46,7 +46,7 @@ export default function ProduceForm(){
         })
 
         try {
-            await API.post('produce/produce/', data);
+            await API.post('produce/', data);
             toast.success('produce created successfully');
 
             setFormData({
