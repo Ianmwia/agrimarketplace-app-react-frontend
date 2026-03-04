@@ -158,8 +158,8 @@ export default function Marketplace(){
 
                                 <div className='flex gap-8'>
                                     <div className='text-center'>
-                                        <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Quantity</p>
-                                        <p className='font-medium'>{order.quantity}</p>
+                                        <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Quantity of Items Ordered</p>
+                                        <p className='font-medium'>{order.quantity} KG</p>
                                     </div>
                                     <div className='text-center'>
                                         <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Amount</p>
@@ -171,8 +171,14 @@ export default function Marketplace(){
                                     </div>
 
                                 </div>
+                                <div className='mt-3 text-sm text-muted-foreground'>
+                                    <p className='text-lg md:text-2xl'>Order Summary</p>
+                                    You placed an Order for <strong>{order.quantity} kg</strong> of <strong>{order.produce_name}</strong> sourced from farmer <strong>{order.farmer_first_name} {order.farmer_last_name}</strong> 
+                                    Totalling <strong>Ksh {order.total_price}</strong>
+                                </div>
                                 <div className='flex flex-col items-center gap-2'>
-                                    <Badge fontVariant={
+                                    <Badge 
+                                    fontVariant={
                                         order.status === 'pending' ? 'secondary':
                                         order.status === 'accepted' ? 'outline':
                                         order.status === 'paid' ? 'default': 'destructive'
@@ -188,11 +194,11 @@ export default function Marketplace(){
                                         >Pay Ksh {order.total_price}</Button>
                                     )}
                                 </div>
-                                    <Badge variant={order.status === 'pending' ? 'secondary' : 'default'}
-                                    className='px-4 py-1'
-                                    >
-                                        {order.status.toUpperCase()}
-                                    </Badge>
+                                {order.status === 'rejected' && order.rejection_reason &&(
+                                    <p className='mt-2 text-sm text-destructive text-center max-w-xs'>
+                                        <strong>Reason:</strong> {order.rejection_reason}
+                                    </p>
+                                )}
                                 </div>
                             
                             ))}
