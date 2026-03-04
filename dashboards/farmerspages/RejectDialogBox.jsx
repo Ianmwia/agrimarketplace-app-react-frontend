@@ -17,7 +17,7 @@ export default function RejectDialog({order, open,setOpen, refresh}){
         }
 
         try {
-            await API.post(`order/${order}/reject/`, {reason})
+            await API.post(`order/${order.id}/reject/`, {reason})
             toast.success('order Rejected')
             setOpen(false)
             setReason('')
