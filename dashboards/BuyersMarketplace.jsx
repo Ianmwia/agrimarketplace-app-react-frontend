@@ -45,7 +45,7 @@ export default function Marketplace(){
                 quantity: quantity,
                 //status: 'pending'
             });
-            toast.success(`Order for ${product.produce_name} placed, you ordered ${quantity} Units, Total Amount is Ksh ${totalAmount}`);
+            toast.success(`Order for ${product.produce_name} placed, you ordered ${quantity} Kilograms for the, Total Amount of Ksh ${totalAmount}`);
             fetchMarketData()
         } catch (error) {
             toast.error('Error placing an order')

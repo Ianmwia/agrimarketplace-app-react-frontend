@@ -119,7 +119,7 @@ export default function OrdersList(){
         {/*reject dialog */}
         {selectOrder && (
             <RejectDialog
-            orderId={(selectOrder)}
+            order={orders.find(o => o.id === selectOrder)}
             open={true}
             setOpen={()=> setSelectOrder(null)}
             refresh={fetchOrders}

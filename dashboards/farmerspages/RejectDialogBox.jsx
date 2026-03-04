@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
-export default function RejectDialog({orderId, open,setOpen, refresh}){
+export default function RejectDialog({order, open,setOpen, refresh}){
     const [reason, setReason] = useState('')
 
     const handleSubmit = async ()=> {
@@ -17,12 +17,12 @@ export default function RejectDialog({orderId, open,setOpen, refresh}){
         }
 
         try {
-            await API.post(`order/${orderId}/reject/`, {reason})
+            await API.post(`order/${order}/reject/`, {reason})
             toast.success('order Rejected')
             setOpen(false)
             setReason('')
             refresh()
-        } catch (error) {
+        } catch {
             toast.error('Failed to reject Order')
         }
     }
@@ -31,7 +31,9 @@ export default function RejectDialog({orderId, open,setOpen, refresh}){
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Reject Order #{orderId} for {orderId.name} from {orderId.first_name} {orderId.last_name}</DialogTitle>
+                    <DialogTitle>
+                        Are You Sure You Want to reject Order #{order.id} for {order.produce_name} placed by {order.buyer_first_name}{order.buyer_last_name}?
+                    </DialogTitle>
                 </DialogHeader>
                 <div>
                     <Textarea
@@ -49,7 +51,7 @@ export default function RejectDialog({orderId, open,setOpen, refresh}){
                         Cancel
                     </Button>
                     <Button variant='destructive'
-                    onClick={() => handleSubmit}
+                    onClick={handleSubmit}
                     >
                         Reject
                     </Button>
