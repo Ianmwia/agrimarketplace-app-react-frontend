@@ -13,24 +13,17 @@ import { toast } from 'sonner';
 import API from '../src/api';
 import { useAuth } from '@/context/useAuth';
 
-export default function Navbar(){
-    const {theme, setTheme} = useTheme()
-    const [isOpen, setIsOpen] = useState(false)
-    const navigate = useNavigate()
-
-    const {user} = useAuth()
-
-    {/*group nav actions for sheet dropdown */}
-    const NavActions = ({isMobile}) => {
+const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, navigate}) => {
         //logout function
         const handleLogout = async () => {
             try {
                 await API.post('logout/')
                 toast.success('Logout Successful')
-            } catch (error) {
+            } catch{
                 toast.error('Logout Error')
             }
             localStorage.removeItem('token')
+            setUser(null)
             navigate('/login')
             setIsOpen(false)
         }
@@ -76,6 +69,17 @@ export default function Navbar(){
         )
     }
 
+export default function Navbar(){
+    const {theme, setTheme} = useTheme()
+    const [isOpen, setIsOpen] = useState(false)
+    const navigate = useNavigate()
+
+    const {user, setUser} = useAuth()
+    const actionProps = {
+        user,
+        setUser, theme, setTheme, setIsOpen, navigate
+    }
+
     return(
         <header className='dark:bg-green-900 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
             <div className='container mx-auto flex h-16 items-center justify-between px-4'>
@@ -86,7 +90,7 @@ export default function Navbar(){
 
             {/*nav for links */}
             <nav className='hidden md:flex items-center gap-8 text-sm font-medium'>
-                <Link to='' className='text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full'>Home</Link>
+                <Link to='/' className='text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full'>Home</Link>
                 {user?.role === 'buyer' && 
                 <Link to='/market' className='text-foreground'>Market</Link>
                 }
@@ -103,7 +107,7 @@ export default function Navbar(){
 
             {/*theme toggle */}
             <div className='hidden md:flex items-center gap-3'>
-                <NavActions/> 
+                <NavActions {...actionProps}/> 
             </div>
 
             {/*hamburger menu */}
@@ -146,7 +150,7 @@ export default function Navbar(){
                         </SheetClose>
                         )}
 
-                        <NavActions isMobile/>
+                        <NavActions {...actionProps} isMobile/>
 
                     </nav>
 
