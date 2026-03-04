@@ -92,9 +92,9 @@ export default function Chat(){
     }
 
     return(
-        <div className='flex h-[85vh] bg-background border rounded-2xl overflow-hidden m-6 shadow-xl'>
+        <div className='flex flex-col md:flex-row h-[85vh] m-2 md:m-6 bg-background border rounded-2xl overflow-hidden shadow-xl'>
             {/*sidebar */}
-            <div className='w-80 border-r flex flex-col bg-muted/20 shrink-0 h-full'>
+            <div className='hidden md:flex md:w-72 lg:w-80 border-r flex-col bg-muted/20'>
                 <div className='p-5 border-b flex items-center justify-between bg-background shrink-0'>
                     <h2 className='text-xl font-bold text-primary tracking-tight'>
                         Kilimo Chat
@@ -119,7 +119,7 @@ export default function Chat(){
                                                     <AvatarFallback>U</AvatarFallback>
                                                 </Avatar>
                                                 <div className='flex flex-col'>
-                                                    <span className='font-medium text-sm'>{u.name || `${u.first_name} ${u.last_name}`}</span>
+                                                    <span className='font-medium text-sm md:text-base'>{u.name || `${u.first_name} ${u.last_name}`}</span>
                                                     <span className='text-[10px] opacity-50'>{u.role}</span>
                                                 </div>
                                             </CommandItem>
@@ -157,7 +157,7 @@ export default function Chat(){
             <div className='flex-1 flex flex-col h-full bg-background relative overflow-hidden'>
                 {activeThread ? (
                     <>
-                        <header className='p-4 border-b flex items-center gap-3 bg-card,50 shrink-0'>
+                        <header className='p-4 border-b flex items-center gap-3 bg-card/50 shrink-0'>
                             <Avatar>
                                 <AvatarFallback>U</AvatarFallback>
                             </Avatar>
@@ -170,7 +170,7 @@ export default function Chat(){
                         {/*messages appear here */}
                         <div
                         ref={scrollRef}
-                        className='flex-1 overflow-y-auto p-6 bg-slate-500 space-y-4'
+                        className='flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 bg-muted/30 space-y-4 scroll-smooth'
                         >
                             {messages.map((msg, i) =>{
                                 const isMe = msg.sender === user?.email || msg.sender_id == user?.id;
@@ -184,10 +184,10 @@ export default function Chat(){
                                         : 'justify-start'
                                         }`}
                                     >
-                                        <div  className={`max-w-[75%] px-4 py-2.5 rounded-2xl
+                                        <div  className={`max-w-[90%] sm:max-w-[80%] md:max-w-[65%] px-4 py-2.5 rounded-2xl wrap-break-word shadow-sm
                                         ${isMe
-                                        ? 'bg-primary text-primary-foreground'
-                                        : 'bg-white text-slate-900'
+                                        ? 'bg-primary text-primary-foreground rounded-br-md'
+                                        : 'bg-muted text-foreground rounded-bl-md'
                                         }`}
                                         >
                                         <p className='leading-relaxed'>
@@ -208,7 +208,7 @@ export default function Chat(){
                         {/*footer content */}
                         <footer className='p-4 border-t bg-background shrink-0 flex gap-2'>
                             <Input
-                            className='flex-q rounded-xl bg-muted/40 border-none h-11'
+                            className='flex-1 rounded-xl bg-muted/40 border-none h-11'
                             placeholder={`Message ${getOtherParticipant(activeThread).name}...`}
                             value ={text}
                             onChange = {(e)=> setText(e.target.value)}
