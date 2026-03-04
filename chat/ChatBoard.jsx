@@ -52,6 +52,9 @@ export default function Chat(){
     useEffect(()=>{
         if (!activeThread?.id) return
 
+        const threadId = activeThread.id
+        API.get(`messages/${threadId}/`).then(res=>{setMessages(res.data)}).catch(()=> setMessages([])) 
+
         const wsUrl = import.meta.env.VITE_WS_URL
 
         const socket = new WebSocket(`${wsUrl}ws/chat/${activeThread.id}/`)
@@ -63,7 +66,7 @@ export default function Chat(){
         }
 
         return()=> socketRef.current?.close()
-    },[activeThread])
+    },[activeThread?.id])
 
     const sendMessage = () => {
         if (!text.trim() || !socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) {
@@ -187,7 +190,7 @@ export default function Chat(){
                                         <div  className={`max-w-[90%] sm:max-w-[80%] md:max-w-[65%] px-4 py-2.5 rounded-2xl wrap-break-word shadow-sm
                                         ${isMe
                                         ? 'bg-primary text-primary-foreground rounded-br-md'
-                                        : 'bg-muted text-foreground rounded-bl-md'
+                                        : 'bg-card text-foreground rounded-bl-md'
                                         }`}
                                         >
                                         <p className='leading-relaxed'>
