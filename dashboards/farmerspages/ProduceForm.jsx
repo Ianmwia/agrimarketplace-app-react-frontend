@@ -33,7 +33,7 @@ export default function ProduceForm(){
             toast.error('Quantity must be at least 10kg')
             return
         }
-        if (Number(formData.price) < 400){
+        if (Number(formData.price_per_unit) < 400){
             toast.error('Price must be above Kes 400 per unit')
             return
         }
@@ -46,7 +46,11 @@ export default function ProduceForm(){
         })
 
         try {
-            await API.post('produce/', data);
+            await API.post('produce/', data, {
+                headers: {
+                    "Content-Type": 'multipart/formdata'
+                },
+            })
             toast.success('produce created successfully');
 
             setFormData({
