@@ -9,27 +9,36 @@ const API = axios.create({
 });
 
 {/*Auto handle django csrf tokens */}
-API.defaults.xsrfCookieName = 'csrftoken';
-API.defaults.xsrfHeaderName = 'X-CSRFToken';
+//API.defaults.xsrfCookieName = 'csrftoken';
+//API.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+//memoization
+let memoizedToken = null
 
 {/*add interceptor to get cookies */}
 
 function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
+    try{
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }catch(e){
+        console.log(e)
+        return null;
+    }
+    return null
 }
 
 API.interceptors.request.use(async (config) => {
-    if (['post', 'put', 'patch', 'delete'].includes(config.method)) {
-        let csrfToken = getCookie('csrftoken');
+    if (['post', 'put', 'patch', 'delete'].includes(config.method?.toLocaleLowerCase())) {
+        let csrfToken = getCookie('csrftoken') || memoizedToken;
 
         //if (!) do not call always just when no token is available
         if (!csrfToken){
             try{
-                await API.get(`${baseURL}csrf/`, {withCredentials:true})
-                csrfToken = getCookie('csrftoken')
+                const response = await API.get('csrf/')
+                csrfToken = response.data.csrfToken
+                memoizedToken = csrfToken
             }catch (error){
                 console.error("csrf fetch failed", error)
             }
