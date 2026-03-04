@@ -27,7 +27,7 @@ export default function Chat(){
     //fetch users and threads
     useEffect(()=>{
         API.get('threads/').then(res => setThreads(res.data))
-        API.get('users/').then(res => setThreads(res.data)).catch(()=>{})
+        API.get('users/').then(res => setUsersList(res.data)).catch(()=>{})
 
     },[])
     //scroll feature
@@ -49,19 +49,18 @@ export default function Chat(){
 
     //web sockets connection using django channels and upstash redis hosting
     useEffect(()=>{
-        if (!activeThread) return
+        if (!activeThread?.id) return
 
-        setMessages(activeThread.messages || [])
+        const wsUrl = import.meta.env.VITE_WS_BASE_URL
 
-        //web socket api use wss
-        const socket = new WebSocket(`ws://localhost:8000/ws/chat/${activeThread.id}/`)
-        socketRef .current = socket
+        const socket = new WebSocket(`${wsUrl}ws/chat/${activeThread.id}/`)
+        socketRef.current = socket
 
         socket.onmessage = (e) => {
             const data = JSON.parse(e.data)
-            console.log('Websocket Received:', data)
-            setMessages(prev => [...prev, data])
+            setMessages((prev) => [...prev, data])
         }
+
         return()=> socketRef.current?.close()
     },[activeThread])
 
@@ -133,7 +132,7 @@ export default function Chat(){
                         const other = getOtherParticipant(t);
                         return(
                             <div key={t.id} onClick={()=>setActiveThread(t)}
-                            className={`${activeThread?.id === t.id }`}>
+                            className={`flex items-center gap-4 p-4 cursor-pointer  border-b ${activeThread?.id === t.id  ? 'bg-background shadow-sm border-r-4 border-r-primary' : 'hover:bg-accent/40'}`}>
                             <Avatar>
                             <AvatarFallback>U</AvatarFallback>
                             </Avatar>
@@ -147,6 +146,89 @@ export default function Chat(){
                     })}
 
                 </div>
+            </div>
+
+            {/*new persons thread */}
+            <div className='flex-1 flex flex-col h-full bg-background relative overflow-hidden'>
+                {activeThread ? (
+                    <>
+                        <header>
+                            <Avatar>
+                                <AvatarFallback>U</AvatarFallback>
+                            </Avatar>
+                            <div className='flex-1'>
+                                <p className='font-bold text-sm'>{getOtherParticipant(activeThread).name}</p>
+                                <p className='font-bold text-muted-foreground capitalize mt-1'>{getOtherParticipant(activeThread).role}</p>
+                            </div>
+                        </header>
+
+                        {/*messages appear here */}
+                        <div
+                        ref={scrollRef}
+                        className='flex-1 overflow-y-auto p-6 bg-slate-500 space-y-4'
+                        >
+                            {messages.map((msg, i) =>{
+                                const isMe = msg.sender === user?.email || msg.sender_id == user?.id;
+                                const displayContent = msg.text || msg.message
+
+                                return(
+                                    <div key={msg.id || i}
+                                    className={`max-w-[75%]
+                                        ${isMe
+                                        ? 'justify-end'
+                                        : 'justify-start'
+                                        }`}
+                                    >
+                                        <div  className={`max-w-[75%] px-4 py-2.5 rounded-2xl
+                                        ${isMe
+                                        ? 'bg-primary text-primary-foreground'
+                                        : 'bg-white text-slate-900'
+                                        }`}
+                                        >
+                                        <p className='leading-relaxed'>
+                                            {displayContent || <span className='font-light'>Message content missing</span>}
+                                        </p>
+                                        <span className={`text-[9px] block ${isMe ? 'opacity-70' : "opacity-40"}`}
+                                        >
+                                            {msg.created_at ? new Date(msg.created_at).toLocaleDateString([], {hour: "2-digit", minute: '2-digit'}) : "just now"}
+                                        </span>
+
+                                    </div>
+                                </div>
+                                )
+                            })}
+                            
+                        </div>
+
+                        {/*footer content */}
+                        <footer>
+                            <Input
+                            placeholder={`Message ${getOtherParticipant(activeThread).name}...`}
+                            value ={text}
+                            onChange = {(e)=> setText(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                            >
+                            </Input>
+                            <Button
+                            onClick={sendMessage}
+                            size='icon'
+                            >
+                                <Send className='h-4 w-4'/>
+                            </Button>
+                        </footer>
+                    </>
+                ) :(
+                    <div className='flex-1 flex flex-col items-center justify-center text-center'>
+                        <div className='w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center'>
+                            <Search className='h-10 w-10'/>
+                        </div>
+                        <h2 className='text-xl'>Your Marketplace Inbox</h2>
+                        <p className='text-muted-foreground max-w-xs text-sm'>
+                            Select a Chat to view messages or start new conversations
+                        </p>
+                    </div>
+                )}
+
             </div>
         </div>
     )
