@@ -53,7 +53,7 @@ export default function Chat(){
         if (!activeThread?.id) return
 
         const threadId = activeThread.id
-        API.get(`messages/?thread=${threadId}/`).then(res=>{setMessages(res.data)}).catch(()=> setMessages([])) 
+        API.get(`messages/?thread=${threadId}`).then(res=>{setMessages(res.data)}).catch(()=> setMessages([])) 
 
         const wsUrl = import.meta.env.VITE_WS_URL
 
