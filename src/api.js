@@ -28,7 +28,7 @@ API.interceptors.request.use(async (config) => {
         //if (!) do not call always just when no token is available
         if (!csrfToken){
             try{
-                await API.get('csrf/')
+                await API.get(`${baseURL}csrf/`, {withCredentials:true})
                 csrfToken = getCookie('csrftoken')
             }catch (error){
                 console.error("csrf fetch failed", error)
