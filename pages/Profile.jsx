@@ -15,6 +15,7 @@ import API from '../src/api';
 export default function Profile(){
     const [isEditing, setIsEditing] = useState(false);
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
     const fetchProfile = useCallback(async () => {
@@ -39,8 +40,15 @@ export default function Profile(){
         //update profile
         const handleUpdate = async (e) => {
             e.preventDefault();
+            setLoading(true)
 
-            const formData = new FormData(e.currentTarget);
+            const form = e.currentTarget
+            const formData = new FormData(form);
+
+            const imageFile = formData.get('image')
+            if (imageFile && imageFile.size === 0){
+                formData.delete('image')
+            }
 
             try {
                 await API.post('profile/', formData);
@@ -50,6 +58,8 @@ export default function Profile(){
             } catch (error) {
                 console.error(error.response?.data);
                 toast.error('Update failed');
+            } finally{
+                setLoading(false)
             }
 
     };
@@ -151,8 +161,15 @@ export default function Profile(){
                             </div>
 
                             <div className='flex flex-col md:flex-row items-center gap-4 pt-4'>
-                                <Button type='submit' className='w-full md:w-auto px-10'>
-                                    Update
+                                <Button type='submit' className='w-full md:w-auto px-10' disabled={loading}>
+                                    {loading ? (
+                                        <>
+                                        <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
+                                        Updating
+                                        </>
+                                    ) : (
+                                        "Update"
+                                    )}
                                 </Button>
 
                                 {/*cancel button */}
