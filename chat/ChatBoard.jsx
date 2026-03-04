@@ -128,7 +128,25 @@ export default function Chat(){
                 </div>
 
                 {/*another participant */}
-                
+                <div className='flex-1 overflow-y-auto'>
+                    {threads.map(t => {
+                        const other = getOtherParticipant(t);
+                        return(
+                            <div key={t.id} onClick={()=>setActiveThread(t)}
+                            className={`${activeThread?.id === t.id }`}>
+                            <Avatar>
+                            <AvatarFallback>U</AvatarFallback>
+                            </Avatar>
+                            <div className='flex-1 min-w-0'>
+                                <p>{other.name}</p>
+                                <p>{other.role}</p>
+                            </div>
+                        </div>
+                            
+                        )
+                    })}
+
+                </div>
             </div>
         </div>
     )
