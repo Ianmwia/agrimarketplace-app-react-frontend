@@ -18,14 +18,14 @@ export default function ReportForm(){
     const [assignedTo, setAssignedTo] = useState('')
 
     useEffect(()=>{
-        const fetchOfficers = async (e) => {
+        const fetchOfficers = async () => {
 
         try {
             const res = await API.get('produce/')
             const data = res.data.officers || []
             setOfficers(data)
             
-        } catch (error) {
+        } catch {
             toast.error('Could Not load Officers List')
         }    
     }
@@ -41,7 +41,7 @@ export default function ReportForm(){
         }
 
         try {
-            const res = await API.post('report/', {
+            await API.post('report/', {
                 title: title,
                 description: description,
                 assigned_to: assignedTo
@@ -49,7 +49,7 @@ export default function ReportForm(){
             })
             toast.success('Report Submitted')
             
-        } catch (error) {
+        } catch {
             toast.error('failed to create report')
         }    
     }
@@ -65,14 +65,14 @@ export default function ReportForm(){
             <Separator/>
            
 
-            <form action="" encType='multipart/form-data' onSubmit={createReport} className='space-y-5'>
+            <form action="" encType='multipart/form-data' onSubmit={createReport} className='space-y-5 bg-muted/30 p-6 rounded-xl  border border-border'>
                 <Label>Title</Label>
                 <Input name='title' type='text' placeholder='Title' onChange={(e)=> setTitle(e.target.value)} required/>
                 
                  <Label>Field Officer</Label>
                 <Select key={officers.length} onValueChange={setAssignedTo} value={assignedTo}>
                     <SelectTrigger>
-                        <SelectValue placeholder='select field officer'/>
+                        <SelectValue placeholder='Select Field Officer'/>
                     </SelectTrigger>
                     <SelectContent>
                         {officers.map((officer)=> (
@@ -85,7 +85,7 @@ export default function ReportForm(){
                     </SelectContent>
                 </Select>
                  <Label>Description</Label>
-                <Textarea placeholder='enter a description' onChange={(e)=> setDescription(e.target.value)}/>
+                <Textarea placeholder='Describe Your Message' onChange={(e)=> setDescription(e.target.value)}/>
 
                 <div className='md:cols-span-2 mt-5'>
                     <Button className='w-full'>
