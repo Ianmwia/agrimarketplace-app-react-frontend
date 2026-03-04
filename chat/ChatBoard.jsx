@@ -97,7 +97,7 @@ export default function Chat(){
     return(
         <div className='flex flex-col md:flex-row h-[85vh] m-2 md:m-6 bg-background border rounded-2xl overflow-hidden shadow-xl'>
             {/*sidebar */}
-            <div className='flex md:w-72 lg:w-80 border-b md:border-r bg-muted/20 overflow-y-auto max-h-[30vh] md:max-h-full'>
+            <div className='flex md:w-72 lg:w-80 border-b md:border-r bg-muted/20 overflow-y-auto grow md:grow-0'>
                 <div className='p-5 border-b flex items-center justify-between bg-background shrink-0'>
                     <h2 className='text-xl font-bold text-primary tracking-tight'>
                         Kilimo Chat
