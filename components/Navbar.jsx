@@ -75,6 +75,7 @@ export default function Navbar(){
     const navigate = useNavigate()
 
     const {user, setUser} = useAuth()
+
     const actionProps = {
         user,
         setUser, theme, setTheme, setIsOpen, navigate
@@ -90,7 +91,11 @@ export default function Navbar(){
 
             {/*nav for links */}
             <nav className='hidden md:flex items-center gap-8 text-sm font-medium'>
-                <Link to='/' className='text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full'>Home</Link>
+                {!user && (
+                    <Link to='/' className='text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full'>Home</Link>
+                )}
+
+                {/*role links */}
                 {user?.role === 'buyer' && 
                 <Link to='/market' className='text-foreground'>Market</Link>
                 }
@@ -100,8 +105,13 @@ export default function Navbar(){
                 {user?.role === 'field_officer' &&
                 <Link to='/field_officer' className='text-foreground'>Field Officer Reports</Link>
                 }
-                
-                {/*<Link to='/thread' className='text-foreground'>Chat</Link>*/}
+                {user && 
+                <Link to='/thread' className='text-foreground'>Chat</Link>
+                }
+                {/*not logged in */}
+                {user && 
+                <Link to='/login' className='text-foreground'>Login</Link>
+                }
                 
             </nav>
 
@@ -127,11 +137,15 @@ export default function Navbar(){
                     </SheetHeader>
                     <nav className='flex flex-col items-center gap-8'>
                         <SheetClose asChild>
+                            {!user && (
                             <Link to='/home' className='text-2xl font-semibold'>Home</Link>                        
-                        </SheetClose>
+                            )}
+                            </SheetClose>
                         {user?.role === 'farmer' && (
                         <SheetClose asChild>
-                            <Link to='/farmer' className='text-2xl font-semibold'>Farmer</Link>                        
+                            {user?.role === 'farmer' && (
+                            <Link to='/farmer' className='text-2xl font-semibold'>Farmer</Link>  
+                            )}                      
                         </SheetClose>
                         )}
                         {user?.role === 'buyer' &&(
@@ -147,6 +161,17 @@ export default function Navbar(){
                         {user &&(
                         <SheetClose asChild>
                             <Link to='/profile' className='text-2xl font-semibold'>Profile</Link>                        
+                        </SheetClose>
+                        )}
+                        {user &&(
+                        <SheetClose asChild>
+                            <Link to='/thread' className='text-foreground'>Chat</Link>
+                        </SheetClose>
+                        )}
+                        {/*mobile login */}
+                        {!user &&(
+                        <SheetClose asChild>
+                            <Link to='/login' className='text-foreground'>Login</Link>
                         </SheetClose>
                         )}
 
