@@ -83,17 +83,23 @@ export default function Navbar(){
 
     return(
         <header className='dark:bg-green-900 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
-            <div className='container mx-auto flex h-16 items-center justify-between px-4'>
+            <div className='container mx-auto flex flex-row-reverse h-16 items-center justify-between px-4 relative'>
             {/*brand web name */}
-            <div>
-                <p className='text-2xl font-bold tracking-tighter'>Kilimo</p>
+            {!user ?( 
+            <div className={`absolute left-1/2 -translate-x-1/2 transition-all duration-300`}>
+                <Link to='/' className='text-4xl font-bold tracking-tighter'>Kilimo</Link>
             </div>
+            ): (
+                <div>
+                <p className='text-4xl font-bold tracking-tighter'>Kilimo</p>
+                </div>
+            )}
 
             {/*nav for links */}
             <nav className='hidden md:flex items-center gap-8 text-sm font-medium'>
-                {!user && (
+                {/* {!user && (
                     <Link to='/' className='text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full'>Home</Link>
-                )}
+                )} */}
 
                 {/*role links */}
                 {user?.role === 'buyer' && 
@@ -109,9 +115,9 @@ export default function Navbar(){
                 <Link to='/thread' className='text-foreground'>Chat</Link>
                 }
                 {/*not logged in */}
-                {user && 
+                {/* {!user && 
                 <Link to='/login' className='text-foreground'>Login</Link>
-                }
+                } */}
                 
             </nav>
 
@@ -138,14 +144,14 @@ export default function Navbar(){
                     <nav className='flex flex-col items-center gap-8'>
                         <SheetClose asChild>
                             {!user && (
-                            <Link to='/home' className='text-2xl font-semibold'>Home</Link>                        
+                            <Link to='/' className='text-2xl font-semibold'>Home</Link>                        
                             )}
                             </SheetClose>
                         {user?.role === 'farmer' && (
                         <SheetClose asChild>
-                            {user?.role === 'farmer' && (
+                            
                             <Link to='/farmer' className='text-2xl font-semibold'>Farmer</Link>  
-                            )}                      
+                                                 
                         </SheetClose>
                         )}
                         {user?.role === 'buyer' &&(
