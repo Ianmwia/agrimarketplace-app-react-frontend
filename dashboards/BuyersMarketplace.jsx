@@ -6,26 +6,31 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge, Leaf, ShoppingCart, User } from 'lucide-react';
+import SearchMarketplace from '../components/SearchMarketplace';
 
 export default function Marketplace(){
     const [tab, setTab] = useState('market') // tab switching marketplace or orders
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([])
     const [orderQuantity, setOrderQuantity] = useState({}); //stores productId and quantity
+    const [searchQuery, setSearchQuery] = useState('')
 
 
    
 
     const fetchMarketData = useCallback(async () => {
         try {
-            const res = await API.get('order/');
+            const query = (typeof searchQuery === 'string') ? searchQuery:''
+            const url =  searchQuery ? `order/?q=${encodeURIComponent(query)}` : 'order/';
+            const res = await API.get(url)
+
             setProducts(res.data.available_batches || []);
             setOrders(res.data.orders || []);
             console.log(res.data)
         } catch {
             toast.error('Failed to fetch data')
         }
-    },[]);
+    },[searchQuery]);
     
     useEffect(()=>{
         const load = async () => {
@@ -84,6 +89,15 @@ export default function Marketplace(){
                     className={`px-6 font-bold ${tab === 'orders'}`}>
                         <Leaf className='mr-2 h-4 w-4'/>My Orders
                 </Button>
+            </div>
+            {/* search bar */}
+            <div>
+                {tab === 'market' &&(
+                    <div>
+                        <SearchMarketplace onSearch={setSearchQuery}/>
+                    </div>
+                )}
+
             </div>
 
             {/*market tab */}
