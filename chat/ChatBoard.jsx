@@ -95,9 +95,11 @@ export default function Chat(){
     }
 
     return(
-        <div className='flex md:flex-row md:h-[85vh] h-full m-2 md:m-6 bg-background border rounded-2xl overflow-hidden shadow-xl'>
+        // <div className='flex md:flex-row md:h-[85vh] h-full m-2 md:m-6 bg-background border rounded-2xl overflow-hidden shadow-xl'>
+        <div className='flex overflow-x-auto snap-x snap-mandatory md:flex-row md:h-[85vh] h-[90vh] m-2 md:m-6 bg-background border rounded-2xl shadow-xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
             {/*sidebar */}
-            <div className=' w-80 border-r flex flex-col bg-muted/20 shrink-0 h-full'>
+            {/* <div className=' w-80 border-r flex flex-col bg-muted/20 shrink-0 h-full'> */}
+            <div className='w-full md:w-80 border-r flex flex-col bg-muted/20 shrink-0 h-full snap-start'>
                 <div className='p-5 border-b flex items-center justify-between bg-background shrink-0'>
                     <h2 className='text-xl font-bold text-primary tracking-tight'>
                         Kilimo Chat
@@ -157,7 +159,8 @@ export default function Chat(){
             </div>
 
             {/*new persons thread */}
-            <div className='flex-1 flex flex-col h-full bg-background relative overflow-hidden'>
+            {/* <div className='flex-1 flex flex-col h-full bg-background relative overflow-hidden'> */}
+            <div className='w-full md:w-auto md:flex-1 shrink-0 snap-start flex flex-col h-full bg-background relative overflow-hidden'>
                 {activeThread ? (
                     <>
                         <header className='p-4 border-b flex items-center gap-3 bg-card/50 shrink-0'>
