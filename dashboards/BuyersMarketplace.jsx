@@ -142,8 +142,8 @@ export default function Marketplace(){
             {/*Orders Tab */}
             
             {tab === 'orders' &&(
-            <Card className='border-border bg-card shadow-lg'>
-                <CardHeader className='border =b bg-muted/30'>
+            <Card className='border-border bg-card shadow-sm pt-0'>
+                <CardHeader className='border p-2 bg-muted/30 '>
                     <CardTitle className='text-center text-xl'>Purchase order History</CardTitle>
                 </CardHeader>
 
