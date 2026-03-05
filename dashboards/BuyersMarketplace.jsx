@@ -91,7 +91,7 @@ export default function Marketplace(){
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                     {products.map((item)=>(
                         <Card key={item.id} 
-                            className='border-border bg-card shadow-sm hover:shadow-md transition:shadow'>
+                            className='pt-0 border-border bg-card shadow-sm hover:shadow-md transition:shadow'>
                                 <div className='aspect-square bg-muted overflow-hidden rounded-t-lg'>
                                     <img src={item.produce_image} 
                                     className='object-cover w-full h-full'
@@ -101,23 +101,23 @@ export default function Marketplace(){
                                     <div className='flex justify-between items-start gap-2'>
                                         <CardTitle className='text-lg font-bold truncate leading-tight'>
                                             <div>
-                                                <p>{item.produce_name}</p>
+                                                <p className='text-primary'>{item.produce_name}</p>
                                             </div>
                                         </CardTitle>
                                         <div variant='outline' 
-                                        className='shrink-0'
+                                        className='shrink-0 font-semibold'
                                         >KSH {item.price_per_unit}</div>
                                     </div>
                                 </CardHeader>
                                 <CardContent className='p-5 space-y-2'>
                                     <div className='text-sm space-y-1'>
-                                        <p><span className='text-muted-foreground font-semibold uppercase text-[10px] tracking-wider'>Farmer: </span> {item.farmer_first_name} {item.farmer_last_name}</p>
-                                        <p><span className='text-muted-foreground font-semibold uppercase text-[10px] tracking-wider'>Available: </span> {item.quantity} KG</p>
+                                        <p className='text-lg font-medium'><span className='text-muted-foreground font-semibold uppercase text-xl tracking-wider'>Farmer: </span> {item.farmer_first_name} {item.farmer_last_name}</p>
+                                        <p className='text-lg font-medium'><span className='text-muted-foreground font-semibold uppercase text-xl tracking-wider'>Available: </span> {item.quantity} KG</p>
                                     </div>
 
                                     <div className='pt-4 flex flex-col gap-3'>
                                         <div className='space-y-1'>
-                                            <p className=' text-[10px] cont-bold text-muted-foreground uppercase tracking-widest'>Order Amount - KG</p>
+                                            <p className=' text-sm cont-bold text-muted-foreground uppercase tracking-widest'>Order Amount - KG</p>
                                             <Input type='number' min='1' max={item.quantity} placeholder='Enter Quantity'
                                             onChange={(e)=> setOrderQuantity({...orderQuantity, [item.id]: e.target.value})}
                                             className='bg-background'
