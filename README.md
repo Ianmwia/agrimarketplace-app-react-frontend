@@ -172,3 +172,12 @@ If you encounter any bugs or have  queries
 You can open an issue
 
 [Open an Issue](https://github.com/Ianmwia/agrimarketplace-app-react-frontend/issues)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Contact
+
+If you have any questions, feel free to reach out via email:
+- [myaccounts@dr.com](mailto:myaccounts@dr.com)
