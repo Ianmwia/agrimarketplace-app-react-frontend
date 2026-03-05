@@ -150,7 +150,7 @@ export default function Marketplace(){
                 <CardContent className='p-0'>
                     <div className='divide-y divide-border'>
                         {orders.map((order) => (
-                            <div key={order.id} className='p-4 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4 hover:bg-muted/10'>
+                            <div key={order.id} className='p-4 md:p-6 flex flex-col justify-between items-center gap-4 hover:bg-muted/10'>
                                 <div className='text-center md:text-left'>
                                     <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'>Order # {order.id}</p>
                                     <p className='text-lg font-medium'>{order.produce_name || order.produce_details?.name}</p>
@@ -171,10 +171,11 @@ export default function Marketplace(){
                                     </div>
 
                                 </div>
-                                <div className='mt-3 text-sm text-muted-foreground'>
-                                    <p className='text-lg md:text-2xl'>Order Summary</p>
+                                <div className='mt-3 text-sm'>
+                                    <p className='text-lg md:text-2xl font-medium text-center mb-2'>Order Summary</p>
+                                    <p className=' text-center text-sm font-bold text-muted-foreground uppercase tracking-widest leading-relaxed'>
                                     You placed an Order for <strong>{order.quantity} kg</strong> of <strong>{order.produce_name}</strong> sourced from farmer <strong>{order.farmer_first_name} {order.farmer_last_name}</strong> 
-                                    Totalling <strong>Ksh {order.total_price}</strong>
+                                    Totalling <span className='font-bold text-primary'>Ksh {order.total_price}</span></p>
                                 </div>
                                 <div className='flex flex-col items-center gap-2'>
                                     <Badge 
