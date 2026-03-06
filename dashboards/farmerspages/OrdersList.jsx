@@ -60,7 +60,7 @@ export default function OrdersList(){
                         <div className='flex gap-8'>
                             <div className='text-center'>
                             <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'> Quantity</p>
-                            <p className='font-medium'>{order.quantity}</p>
+                            <p className='font-medium'>{order.quantity} Kilograms</p>
                             </div>
                         </div>
                         {/*order information */}
