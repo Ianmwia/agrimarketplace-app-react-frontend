@@ -188,7 +188,7 @@ export default function Marketplace(){
                                 <div className='mt-3 text-sm'>
                                     <p className='text-lg md:text-2xl font-medium text-center mb-2'>Order Summary</p>
                                     <p className=' text-center text-sm font-bold text-muted-foreground uppercase tracking-widest leading-relaxed'>
-                                    You placed an Order for <strong>{order.quantity} kg</strong> of <strong>{order.produce_name}</strong> sourced from farmer <strong>{order.farmer_first_name} {order.farmer_last_name} </strong>  
+                                    You placed an Order for <strong>{order.quantity} kg</strong> of <strong>{order.produce_name}</strong> sourced from farmer <strong>{order.farmer_first_name} {order.farmer_last_name} </strong>   
                                      Totalling <span className='font-bold text-primary'>Ksh {order.total_price}</span></p>
                                 </div>
                                 <div className='flex flex-col items-center gap-2'>
