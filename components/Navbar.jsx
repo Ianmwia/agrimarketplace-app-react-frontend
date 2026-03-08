@@ -84,7 +84,7 @@ export default function Navbar(){
     }
 
     return(
-        <header className='dark:bg-green-900 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
+        <header className='dark:bg-green/90 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
             <div className='container mx-auto flex flex-row-reverse h-16 items-center justify-between px-4 relative'>
             {/*brand web name */}
             {!user ?( 
