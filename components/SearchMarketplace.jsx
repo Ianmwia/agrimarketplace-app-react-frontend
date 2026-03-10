@@ -18,7 +18,7 @@ export default function SearchMarketplace({onSearch}){
         <div className='flex flex-col md:flex-row gap-4 mb-8 md:w-[47%] md:mx-auto lg:w-[38%] bg-card border rounded-xl shadow-sm'>
                 <Input
                 value={searchTerm}
-                placeholder="search by produce name ..."
+                placeholder="search by produce name or location..."
                 onChange = {(e)=> setSearchTerm(e.target.value)}
                 
                 />
