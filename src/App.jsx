@@ -12,6 +12,9 @@ import FarmerDashboard from '../dashboards/FarmerDashboard'
 import ViewReport from '../dashboards/fieldofficerspages/ViewReport'
 import { AuthProvider } from './context/AuthProvider'
 import ProtectedRoute from './routes/ProtectedRoute'
+import ForgotPassword from '../pages/ForgotPassword'
+import PasswordResetConfirm from '../pages/PasswordResetConfirm'
+import ChangePassword from '../pages/ChangePassword'
 
 import Chat from '../chat/ChatBoard'
 
@@ -24,11 +27,14 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<SignUp/>} />
+        <Route path='/forgot-password' element={<ForgotPassword/>} />
+        <Route path='/password-reset-confirm/:uid/:token' element={<PasswordResetConfirm/>} />
         {/*navbar routes */}
         <Route element={<Layout />}>
 
             <Route path='' element={<Home/>}/>
             <Route path='/profile' element={<Profile/>}/>
+            <Route path='/change-password' element={<ChangePassword/>}/>
             <Route path='/thread' element={<Chat/>}/>
         
         <Route path='/farmer' element={
