@@ -127,6 +127,7 @@ export default function Marketplace(){
                                     <div className='text-sm space-y-1'>
                                         <p className='text-lg font-medium'><span className='text-muted-foreground font-semibold uppercase text-xl tracking-wider'>Farmer: </span> {item.farmer_first_name} {item.farmer_last_name}</p>
                                         <p className='text-lg font-medium'><span className='text-muted-foreground font-semibold uppercase text-xl tracking-wider'>Available: </span> {item.quantity} KG</p>
+                                        <p className='text-lg font-medium'><span className='text-muted-foreground font-semibold uppercase text-xl tracking-wider'>Location: </span> {item.farmer_location}</p>
                                     </div>
 
                                     <div className='pt-4 flex flex-col gap-3'>
