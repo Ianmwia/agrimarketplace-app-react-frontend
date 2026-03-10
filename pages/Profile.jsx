@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from 'sonner';
+import { KeyRound } from 'lucide-react';
 
 import API from '../src/api';
 
@@ -117,12 +118,20 @@ export default function Profile(){
                                         <p className='text-lg font-medium'>{user?.role}</p>
                                     </div>
 
-                                    <div className='pt-6'>
+                                    <div className='pt-6 flex gap-3'>
                                         <Button
                                             onClick={()=> setIsEditing(true)}
                                             className='w-full md:w-auto px-10'
                                         >
                                             Edit Profile
+                                        </Button>
+                                        <Button
+                                        variant='outline'
+                                            onClick={()=> navigate('/change-password')}
+                                            className='w-full md:w-auto px-10'
+                                        >
+                                            <KeyRound className='w-4 h-4 mr-2'/>
+                                            Change Password
                                         </Button>
                                     </div>
                                 </div>
