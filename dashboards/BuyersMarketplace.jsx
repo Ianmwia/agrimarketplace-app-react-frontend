@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import API from '@/api';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,7 @@ export default function Marketplace(){
     const [orders, setOrders] = useState([])
     const [orderQuantity, setOrderQuantity] = useState({}); //stores productId and quantity
     const [searchQuery, setSearchQuery] = useState('')
+    const navigate = useNavigate()
 
 
    
@@ -203,11 +205,23 @@ export default function Marketplace(){
                                         {order.status.toUpperCase()}
                                     </Badge>
                                     {order.status === 'accepted' && (
+                                        <>
                                         <Button
                                         size='sm'
                                         className='bg-primary'
                                         onClick={()=> handleMpesaPayment(order)}
                                         >Pay Ksh {order.total_price}</Button>
+
+                                        {order.id && (
+                                        <Button
+                                        size='sm'
+                                        variant='outline'
+                                        onClick={()=> navigate(`/pickup/${order.id}`)}
+                                        >
+                                            Select Pick Up Point
+                                        </Button>
+                                        )}
+                                        </>
                                     )}
                                 </div>
                                 {order.status === 'rejected' && order.rejection_reason &&(
