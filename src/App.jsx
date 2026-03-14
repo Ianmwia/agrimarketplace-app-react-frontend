@@ -17,6 +17,7 @@ import PasswordResetConfirm from '../pages/PasswordResetConfirm'
 import ChangePassword from '../pages/ChangePassword'
 
 import Chat from '../chat/ChatBoard'
+import CreatePickUpPoint from '../map/PickUpPage'
 
 function App() {
 
@@ -28,7 +29,7 @@ function App() {
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<SignUp/>} />
         <Route path='/forgot-password' element={<ForgotPassword/>} />
-        <Route path='/password-reset-confirm/:uid/:token' element={<PasswordResetConfirm/>} />
+        <Route path='/reset-password/:uid/:token' element={<PasswordResetConfirm/>} />
         {/*navbar routes */}
         <Route element={<Layout />}>
 
@@ -36,6 +37,7 @@ function App() {
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/change-password' element={<ChangePassword/>}/>
             <Route path='/thread' element={<Chat/>}/>
+            <Route path='/pickup/:orderId' element={<CreatePickUpPoint/>}/>
         
         <Route path='/farmer' element={
           <ProtectedRoute allowedRoles={['farmer']}>
