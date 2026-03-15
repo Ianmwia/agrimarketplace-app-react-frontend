@@ -20,7 +20,8 @@ export default function PasswordResetConfirm(){
         setLoading(true)
 
         try {
-            await API.post('auth/password/reset/confirm', {
+            
+            await API.post('api/auth/password/reset/confirm/', {
                 uid,
                 token,
                 ...formData
@@ -42,8 +43,7 @@ export default function PasswordResetConfirm(){
     return(
         <div className='p-2 flex min-h-screen items-center justify-center'>
             <div className='w-full m-2 md:w-1/2 lg:w-3/7 flex flex-col p-2 space-y-2 bg-card rounded-lg shadow md:space-x-2 lg:py-0'>
-                <h2 className='text-xl font-bold text-center leading-tight tracking-tight text-foreground p-2'>Set New Password</h2>
-                <p className='text-center'>Enter Your Email to receive a reset link</p>
+                <h2 className='text-xl font-bold text-center leading-tight tracking-tight text-foreground p-2'>Set A New Password</h2>
 
                 <form className='p-3 space-y-4' action="" onSubmit={handleSubmit}>
                     <Input
