@@ -6,12 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
 
 export default function ProduceForm(){
     const [formData, setFormData] = useState({
         name:'',
         price_per_unit:'',
         quantity:'',
+        unit:'kg',
         batch_number: '',
         category: '',
         description: '',
@@ -29,12 +31,15 @@ export default function ProduceForm(){
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (Number(formData.quantity) < 10){
-            toast.error('Quantity must be at least 10kg')
+        const quantity = Number(formData.quantity)
+        const unit = formData.unit
+
+        if ((unit === 'kg' || unit === 'litre') && quantity <30 ){
+            toast.error(`Quantity must be at least 30 ${unit}`)
             return
         }
-        if (Number(formData.price_per_unit) < 400){
-            toast.error('Price must be above Kes 400 per unit')
+        if (unit === 'unit' && quantity <1 ){
+            toast.error(`Quantity must be at least 1 ${unit}`)
             return
         }
         
@@ -48,7 +53,7 @@ export default function ProduceForm(){
         try {
             await API.post('produce/', data, {
                 headers: {
-                    "Content-Type": 'multipart/formdata'
+                    "Content-Type": 'multipart/form-data'
                 },
             })
             toast.success('produce created successfully');
@@ -103,8 +108,20 @@ export default function ProduceForm(){
 
                     </div>
                     <div className='space-y-2'>
+                    <Label>Unit</Label>
+                    <Select
+                    name='unit'
+                    value={formData.unit}
+                    onChange={handleChange}
+                    >
+                        <Option value='kg'>Kilograms (KG)</Option>
+                        <Option value='litre'>Litres (L)</Option>
+                        <Option value='unit'>Units</Option>
+                    </Select>
+                    </div>
+                    <div className='space-y-2'>
                     <Label>Quantity</Label>
-                    <Input name='quantity' type='number' placeholder='Quantity - Minimum Amount 10KG' min={10} onChange={handleChange}/>
+                    <Input name='quantity' type='number' placeholder={`Enter quantity in ${formData.unit}`} min={1} onChange={handleChange}/>
                     </div>
 
                     <div className='space-y-2'>
