@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import API from '@/api';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge, Leaf, ShoppingCart, User } from 'lucide-react';
 import SearchMarketplace from '../components/SearchMarketplace';
+import DeliveryLocationDialog from '../map/SelectDialog';
 
 export default function Marketplace(){
     const [tab, setTab] = useState('market') // tab switching marketplace or orders
@@ -15,7 +16,7 @@ export default function Marketplace(){
     const [orders, setOrders] = useState([])
     const [orderQuantity, setOrderQuantity] = useState({}); //stores productId and quantity
     const [searchQuery, setSearchQuery] = useState('')
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
 
    
@@ -205,23 +206,25 @@ export default function Marketplace(){
                                         {order.status.toUpperCase()}
                                     </Badge>
                                     {order.status === 'accepted' && (
-                                        <>
+                                        <div className=' flex flex-col items-center gap-2'>
                                         <Button
                                         size='sm'
                                         className='bg-primary'
                                         onClick={()=> handleMpesaPayment(order)}
-                                        >Pay Ksh {order.total_price}</Button>
-
-                                        {order.id && (
-                                        <Button
-                                        size='sm'
-                                        variant='outline'
-                                        onClick={()=> navigate(`/pickup/${order.id}`)}
-                                        >
-                                            Select Pick Up Point
+                                        >Pay Ksh {order.total_price}
                                         </Button>
-                                        )}
+
+                                        {order.delivery ? (
+                                            <div className='flex flex-col md:flex-row md:gap-3 items-center p-2 rounded-lg  border'>
+                                                <p>Delivery Status :</p>
+                                                <p>{order.delivery.status.replace('_', '').toUpperCase()}</p>
+                                            </div>
+                                        ):(
+                                            <>
+                                        <DeliveryLocationDialog orderId={order.id} />
                                         </>
+                                    )}
+                                    </div>
                                     )}
                                 </div>
                                 {order.status === 'rejected' && order.rejection_reason &&(
