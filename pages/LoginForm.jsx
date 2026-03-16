@@ -84,8 +84,13 @@ export default function Login(){
                     <button className='bg-primary w-full rounded-lg text-primary-foreground text-[14px] px-5 py-2.5 text-center' type='submit'>Login</button>
                 </div>
             </form>
+            <div className='flex flex-col md:flex-row md:items-center md:mx-auto'>
             <div className='p-2'>
                 <p className='text-sm font-light text-muted-foreground'>Don't have an account? <Link to="/signup" className='text-sm font-medium text-primary'>Sign Up here</Link></p>
+            </div>
+            <div className='pl-2'>
+                <p className='text-sm font-light text-muted-foreground'><Link to="/forgot-password" className='text-sm font-medium text-primary'>Forgot Password?</Link></p>
+            </div>
             </div>
         </div>
         </div>

@@ -10,11 +10,19 @@ import RejectDialog from './RejectDialogBox'
 export default function OrdersList(){
     const [orders, setOrders] = useState([])
     const [selectOrder, setSelectOrder] = useState(null)
+    const [nextPage, setNextPage] = useState(null)
+    const [prevPage, setPrevPage] = useState(null)
 
-    const fetchOrders = useCallback(async () => {
+    const fetchOrders = useCallback(async (endpoint) => {
+        if (!endpoint) return;
+
         try {
-            const res = await API.get('order/')
+            const res = await API.get(endpoint)
+            if (!res.data.orders) return
+            
             setOrders(res.data.orders)
+            setNextPage(res.data.next || null)
+            setPrevPage(res.data.previous || null)
         } catch {
             toast.error('failed to fetch Orders')
             }    
@@ -22,7 +30,7 @@ export default function OrdersList(){
         
         useEffect(()=>{
         const load = async () => {
-            await fetchOrders()
+            await fetchOrders('order/?page=1&ordering=-created_at')
         }
             load();
          },[fetchOrders]);
@@ -40,6 +48,7 @@ export default function OrdersList(){
             }
 
     return(
+        <div>
        <Card className=''>
         <CardHeader>
             <CardTitle>
@@ -60,7 +69,7 @@ export default function OrdersList(){
                         <div className='flex gap-8'>
                             <div className='text-center'>
                             <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'> Quantity</p>
-                            <p className='font-medium'>{order.quantity}</p>
+                            <p className='font-medium'>{order.quantity} Kilograms</p>
                             </div>
                         </div>
                         {/*order information */}
@@ -73,12 +82,23 @@ export default function OrdersList(){
                             <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'> Customer</p>
                             <p className='text-lg font-medium'>{order.buyer_first_name} {order.buyer_last_name}</p>
                         </div>
+                        {/*date ordered */}
+                        <div className='text-center md:text-left'>
+                            <p className='text-[10px] font-bold text-muted-foreground uppercase tracking-widest'> Date of order</p>
+                            <p className='text-lg font-medium'>{new Date(order.created_at).toLocaleDateString('en-GB', {
+                                day: 'numeric',
+                                month: 'short',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                            })
+                                }</p>
+                        </div>
 
                         {/*status */}
                         <div className=' flex gap-3 flex-wrap justify-center'>
                             <Badge fontVariant={order.status === 'pending'
                                 ? "secondary"
-                                : order.status === "accepted"
+                                : order.status === "accepted" || order.status === 'paid'
                                 ? "default"
                                 : "destructive"
                             }
@@ -86,7 +106,7 @@ export default function OrdersList(){
                                 {order.status.toUpperCase()}
                             </Badge>
 
-                            {order.status === 'pending' && (
+                            {order.status === 'pending' ? (
                                 <div className='flex gap-x-2'>
                                     <Button size='sm'
                                     onClick={()=> acceptOrder(order.id)}
@@ -100,6 +120,20 @@ export default function OrdersList(){
                                     >
                                         Reject
                                     </Button>
+                                </div>
+                            ) :(
+                                <div className='text-center'>
+                                    <p
+                                    className={`text-sm font-bold ${
+                                        order.status === 'accepted' ? 'text-primary': 
+                                        order.status === 'paid' ? 'text-green-600' :
+                                        'text-destructive'}`}
+                                    >
+                                        {order.status === 'accepted' && "Order Accepted"}
+                                        {order.status === 'rejected' && "Order Rejected"}
+                                        {order.status === 'paid' && "Order Paid"}
+
+                                    </p>
                                 </div>
                             )}
                         </div>
@@ -128,5 +162,24 @@ export default function OrdersList(){
         )}
 
        </Card>
+       <div className='m-2 mt-4'>
+        <Button
+        variant='outline'
+        disabled={!prevPage}
+        onClick={()=> fetchOrders(prevPage)}
+        className='mr-2'
+        >
+            Previous
+        </Button>
+        
+        <Button
+        variant='outline'
+        disabled={!nextPage}
+        onClick={()=>fetchOrders(nextPage)}
+        className='ml-2'
+        >
+            Next Page</Button>
+       </div>
+       </div>
     )
 }

@@ -79,7 +79,8 @@ export default function ReportForm(){
                             <SelectItem
                             key={officer.id}
                             value={officer.id.toString()}
-                            >{officer.first_name} {officer.last_name}</SelectItem>
+                            >
+                                Name {officer.first_name} {officer.last_name} Service provided {officer.field}</SelectItem>
                         ))}
 
                     </SelectContent>

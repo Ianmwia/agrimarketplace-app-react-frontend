@@ -156,6 +156,42 @@ return(
             </Card>
             </div>
 
+            <div className='p-3 '>
+                <div className='min-h-screen border  rounded-2xl p-2 md:flex md:flex-row md:items-center md:gap-4'>
+                    <div className='mb-3 md:mb-0 md:w-1/2'>
+                        <img className='rounded-xl' src="/farm maize.avif" alt="maize farm" />
+                    </div>
+                    <div className='md:w-1/2'>
+                        <p className='text-sm p-2 leading-normal md:text-[17px] lg:text-xl'>
+                            Kilimo Marketplace is a vital platform that connects farmers with buyers, 
+                            facilitating efficient trade and ensuring fair prices. It also plays a crucial 
+                            role in linking farmers to field officers who provide essential support, advice, and resources 
+                            for improving productivity and sustainability. This system helps streamline the supply chain, increase 
+                            access to markets, and promote agricultural growth across the region
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div className='p-3 '>
+                <div className='min-h-screen border  rounded-2xl p-2 md:flex md:flex-row-reverse md:items-center md:gap-4'>
+                    <div className='mb-3 md:mb-0 md:w-1/2'>
+                        <img className='rounded-xl' src="/farm potatoes.webp" alt="maize farm" />
+                    </div>
+                    <div className='md:w-1/2'>
+                        <p className='text-sm p-2 leading-normal md:text-[17px] lg:text-xl'>
+                            At Kilimo, we are committed to establishing a direct food supply chain from farmers to ensure fresh, 
+                            high-quality produce reaches the market efficiently, while eliminating middlemen to maximize farmers' earnings. 
+                            We also work closely with field officers to provide farmers with vital support, including technical guidance, 
+                            training on best practices, pest management, and access to improved seeds and fertilizers. By combining these 
+                            efforts, Kilimo aims to increase yields, boost farmers' incomes, and ensure a reliable food supply for all.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
         
     
 </div>

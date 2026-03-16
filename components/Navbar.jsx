@@ -42,11 +42,13 @@ const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, naviga
             {user && (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='relative h-10 w-10 rounded-full p-0'>
-                            <Avatar className='h-10 w-10'>
+                        <Button variant='ghost' className='flex items-center gap-2 px-2 h-10 hover:bg-muted rounded-md'>
+                            <Avatar className='h-8 w-8'>
                                 <AvatarImage src=''/>
-                                <AvatarFallback>JD</AvatarFallback>
-                            </Avatar>
+                                <AvatarFallback>
+                                    pfp
+                                </AvatarFallback>
+                            </Avatar>{user.first_name} {user.last_name}
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='end' className='w-48'>
@@ -82,7 +84,7 @@ export default function Navbar(){
     }
 
     return(
-        <header className='dark:bg-green-900 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
+        <header className='dark:bg-green/90 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
             <div className='container mx-auto flex flex-row-reverse h-16 items-center justify-between px-4 relative'>
             {/*brand web name */}
             {!user ?( 
