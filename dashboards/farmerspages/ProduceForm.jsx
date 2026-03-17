@@ -6,14 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Select } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function ProduceForm(){
     const [formData, setFormData] = useState({
         name:'',
         price_per_unit:'',
         quantity:'',
-        unit:'kg',
+        unit:'',
         batch_number: '',
         category: '',
         description: '',
@@ -27,6 +27,10 @@ export default function ProduceForm(){
             setFormData({...formData, [e.target.name]:e.target.value})
         }
     }
+
+    const handleSelectChange = async (value) => {
+        setFormData({...formData, unit: value})
+    } 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -62,6 +66,7 @@ export default function ProduceForm(){
                 name:'',
                 price_per_unit:'',
                 quantity:'',
+                unit:'kg',
                 batch_number:'',
                 category: '',
                 description: '',
@@ -112,11 +117,23 @@ export default function ProduceForm(){
                     <Select
                     name='unit'
                     value={formData.unit}
-                    onChange={handleChange}
+                    onValueChange={handleSelectChange}
+                    
                     >
-                        <Option value='kg'>Kilograms (KG)</Option>
-                        <Option value='litre'>Litres (L)</Option>
-                        <Option value='unit'>Units</Option>
+                        <SelectTrigger className={`w-full`}>
+                            <SelectValue placeholder='Select Unit'>{
+                            formData.unit == 'kg' ? 'Kilograms' :
+                            formData.unit == 'litre' ? 'Litres' :
+                            'Units'
+
+                            }</SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value='kg'>Kilograms (KG)</SelectItem>
+                            <SelectItem value='litre'>Litres (L)</SelectItem>
+                            <SelectItem value='unit'>Units</SelectItem>
+                        </SelectContent>
+                       
                     </Select>
                     </div>
                     <div className='space-y-2'>
