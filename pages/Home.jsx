@@ -21,7 +21,7 @@ return(
                 <Link to='/signup'>Start Your Journey</Link></Button>
             <Button size='lg' variant='outline'
             onClick={()=>{document.getElementById('features')?.scrollIntoView({behavior:'smooth'})}}
-            >Explore Features Like App</Button>
+            >Explore Features</Button>
         </div>
     </div>
 
