@@ -18,6 +18,7 @@ import ChangePassword from '../pages/ChangePassword'
 
 import Chat from '../chat/ChatBoard'
 import CreatePickUpPoint from '../map/PickUpPage'
+import UpdateProduce from '../dashboards/farmerspages/UpdateProduce'
 
 function App() {
 
@@ -42,6 +43,10 @@ function App() {
         <Route path='/farmer' element={
           <ProtectedRoute allowedRoles={['farmer']}>
             <FarmerDashboard/> 
+          </ProtectedRoute> }/>
+        <Route path='/produce/update/:id' element={
+          <ProtectedRoute allowedRoles={['farmer']}>
+            <UpdateProduce/> 
           </ProtectedRoute> }/>
 
         <Route path='/market' element={
