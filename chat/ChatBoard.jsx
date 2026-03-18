@@ -114,6 +114,9 @@ export default function Chat(){
                         )}
                         {/*dialogcontent */}
                         <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle/>
+                            </DialogHeader>
                             <Command>
                                 <CommandInput placeholder="Search Farmers or officers"/>
                                 <CommandList>
