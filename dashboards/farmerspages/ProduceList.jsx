@@ -1,5 +1,6 @@
 
 import { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import API from '../../src/api'
 import { toast } from 'sonner'
 
@@ -8,6 +9,12 @@ import { Button } from '@/components/ui/button'
 
 export default function ProduceList(){
     const [produce, setProduce] = useState([])
+    const unitLabels = {
+        kg: 'Kilograms',
+        litre: 'Litres',
+        unit: 'Units'
+    }
+    const navigate = useNavigate()
 
     const fetchProduce = useCallback(async () => {
         try {
@@ -54,7 +61,7 @@ export default function ProduceList(){
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                     {produce.map((item) => (
                         <Card key={item.id} 
-                        className='border-border bg-card shadow-sm'>
+                        className='border-border bg-card shadow-sm pt-0'>
 
                             {/*image*/}
                             <div className='aspect-square bg-muted overflow-hidden rounded-t-lg'>
@@ -98,7 +105,7 @@ export default function ProduceList(){
                                                 </div>
                                                 <div className='flex gap-2 justify-between'>
                                                     <p className='text-sm text-muted-foreground'>Quantity:</p>
-                                                    <p className='text-lg font-semibold'>{batch.quantity} KG</p>
+                                                    <p className='text-lg font-semibold'>{batch.quantity} {unitLabels[batch.unit]}</p>
                                                 </div>
                                                 <div className='flex gap-2 justify-between'>
                                                     <p className='text-sm text-muted-foreground'>Price:</p>
@@ -106,12 +113,21 @@ export default function ProduceList(){
                                                 </div>
                                             </div>
                                         ))}
+                                        <div className='flex gap-4'>
                                         <Button
                                         onClick={()=> deleteProduce(item.id)}
                                         variant='destructive'
                                         >
                                             Delete Produce
                                         </Button>
+
+                                        <Button
+                                        onClick={()=> navigate(`/produce/update/${item.id}`)}
+                                        variant='outline'
+                                        >
+                                            Update Produce
+                                        </Button>
+                                        </div>
                                     </div>
                                 ):(
                                     <p className='text-xl py-8'>No batches Available</p>
