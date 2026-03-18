@@ -28,7 +28,7 @@ export default function Chat(){
     //fetch users and threads
     useEffect(()=>{
         API.get('threads/').then(res => setThreads(res.data))
-        API.get('users/').then(res => setUsersList(res.data)).catch(()=>{})
+        API.get('chat-users/').then(res => setUsersList(res.data)).catch(()=>{})
 
     },[])
     //scroll feature
@@ -105,12 +105,13 @@ export default function Chat(){
                         Kilimo Chat
                     </h2>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        {usersList .length > 0 && (
                         <DialogTrigger asChild>
                             <Button variant="secondary" size='icon'>
                                 <Plus className='h-4 w-4'/>
                             </Button>
                         </DialogTrigger>
-
+                        )}
                         {/*dialogcontent */}
                         <DialogContent>
                             <Command>
