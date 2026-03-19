@@ -29,7 +29,7 @@ export default function Marketplace(){
 
             setProducts(res.data.available_batches || []);
             setOrders(res.data.orders || []);
-            console.log(res.data)
+            // console.log(res.data)
         } catch {
             toast.error('Failed to fetch data')
         }
@@ -40,7 +40,16 @@ export default function Marketplace(){
             await fetchMarketData()
         }
             load();
-    },[fetchMarketData]);
+        //poll to refresh cook to waiter
+        const interval = setInterval(()=>{
+            if (tab === 'orders'){
+                load()
+            }
+
+        }, 5000)
+
+        return () => clearInterval(interval)
+    },[fetchMarketData, tab]);
 
     const handlePlaceOrder = async (product) => {
         const quantity = parseInt(orderQuantity[product.id]) || 1;
