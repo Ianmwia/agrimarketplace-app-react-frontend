@@ -29,10 +29,20 @@ export default function OrdersList(){
         },[])
         
         useEffect(()=>{
-        const load = async () => {
-            await fetchOrders('order/?page=1&ordering=-created_at')
-        }
+            const endpoint = 'order/?page=1&ordering=-created_at'
+
+            const load = async () => {
+                await fetchOrders(endpoint)
+            }
             load();
+
+            //poll to refresh cook to waiter
+            const interval = setInterval(()=>{
+                load()
+
+            }, 5000)
+            return () => clearInterval(interval)
+            
          },[fetchOrders]);
         
             
@@ -41,7 +51,7 @@ export default function OrdersList(){
             try {
                 const _res = await API.post(`order/${id}/accept/`)
                     toast.success('order accepted')
-                    fetchOrders()
+                    fetchOrders('order/?page=1&ordering=-created_at')
                 } catch {
                     toast.error('failed to accept order')
                 }    
