@@ -44,11 +44,11 @@ const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, naviga
                     <DropdownMenuTrigger asChild>
                         <Button variant='ghost' className='flex items-center gap-2 px-2 h-10 hover:bg-muted rounded-md'>
                             <Avatar className='h-8 w-8'>
-                                <AvatarImage src=''/>
+                                <AvatarImage src={user?.image}/>
                                 <AvatarFallback>
                                     pfp
                                 </AvatarFallback>
-                            </Avatar>{user.first_name} {user.last_name}
+                            </Avatar>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='end' className='w-48'>
