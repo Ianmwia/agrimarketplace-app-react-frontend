@@ -32,7 +32,7 @@ export default function Marketplace(){
             setOrders(res.data.orders || []);
             // console.log(res.data)
         } catch {
-            toast.error('Failed to fetch data')
+            //toast.error('Failed to fetch data')
         }
     },[searchQuery]);
     
