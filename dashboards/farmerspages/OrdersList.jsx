@@ -24,7 +24,7 @@ export default function OrdersList(){
             setNextPage(res.data.next || null)
             setPrevPage(res.data.previous || null)
         } catch {
-            toast.error('failed to fetch Orders')
+            //toast.error('failed to fetch Orders')
             }    
         },[])
         
