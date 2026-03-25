@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import API from '@/api';
 import { toast } from 'sonner';
 // import { useNavigate } from 'react-router-dom';
+import PaymentMethod from './PaymentDialog';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Badge, Leaf, ShoppingCart, User } from 'lucide-react';
 import SearchMarketplace from '../components/SearchMarketplace';
 import DeliveryLocationDialog from '../map/SelectDialog';
-import { useNavigate } from 'react-router-dom';
+
 
 export default function Marketplace(){
     const [tab, setTab] = useState('market') // tab switching marketplace or orders
@@ -17,7 +18,7 @@ export default function Marketplace(){
     const [orders, setOrders] = useState([])
     const [orderQuantity, setOrderQuantity] = useState({}); //stores productId and quantity
     const [searchQuery, setSearchQuery] = useState('')
-    const navigate = useNavigate()
+    const [selectOrder, setSelectOrder] = useState(null)
 
 
    
@@ -71,30 +72,7 @@ export default function Marketplace(){
         }
     };
 
-    //mpesa payment
-    const handleMpesaPayment = async (order) => {
-        
-        if(!User?.phone){
-            toast.error('Before paying, Please add a phone number to your profile account')
-            setTimeout(() => {
-                navigate('/profile')
-            }, 4000);
-            return
-        }
 
-        try {
-        toast.info("Check your phone for the M-Pesa prompt");
-        const res = await API.post(`order/${order.id}/pay/`);
-
-        if (res.data.CheckoutRequestID) {
-        toast.success("STK Push sent successfully!");
-        // Refresh to show any status changes
-        fetchMarketData();
-        }
-        } catch (error) {
-        toast.error(error.response?.data?.error || "Payment failed to initiate");
-        }
-        };
 
 
 
@@ -229,7 +207,7 @@ export default function Marketplace(){
                                         <Button
                                         size='sm'
                                         className='bg-primary'
-                                        onClick={()=> handleMpesaPayment(order)}
+                                        onClick={()=> setSelectOrder(order)}
                                         >Pay Ksh {order.total_price}
                                         </Button>
 
@@ -260,7 +238,17 @@ export default function Marketplace(){
                     </div>
                 </CardContent>
             </Card>
-            )} 
+            )}
+
+            {/* payment dialog */}
+            {selectOrder &&(
+                <PaymentMethod
+                order={selectOrder}
+                onClose={()=>setSelectOrder(null)}
+                fetchMarketData={fetchMarketData}
+                User={{ phone:selectOrder.buyer_phone }}
+                />
+            )}
         </div>
     )
 }
