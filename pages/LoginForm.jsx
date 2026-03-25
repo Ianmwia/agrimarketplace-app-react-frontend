@@ -83,7 +83,7 @@ export default function Login(){
                 </div>
                 <div>
                     {/* <button className='bg-primary w-full rounded-lg text-primary-foreground text-[14px] px-5 py-2.5 text-center' type='submit'>Login</button> */}
-                    <Button type='submit'>Login</Button>
+                    <Button type='submit' className='w-full'>Login</Button>
                 </div>
             </form>
             <div className='flex flex-col md:flex-row md:items-center md:mx-auto'>
