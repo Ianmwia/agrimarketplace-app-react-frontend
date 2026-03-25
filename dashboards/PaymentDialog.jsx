@@ -61,35 +61,37 @@ export default function PaymentMethod({order, onClose, User, fetchMarketData}){
     }
 
     return(
-        <div className='fixed inset-0  backdrop-blur-sm items-center justify-center z-50 p-4'>
-            <Card className=''>
+        <div className='flex items-center justify-center fixed inset-0  backdrop-blur-sm z-50 p-4'>
+            <Card className='relative w-full max-w-md shadow-lg'>
                 <Button
                 variant='ghost'
                 size='icon'
-                className='absolute right-2 top-2'
+                className='absolute right-2 top-2 h-8 w-8'
                 onClick={onClose}
                 disabled={loading}
                 >
                     <X className='h-3 w-4'/>
                 </Button>
-                <CardHeader>
+                <CardHeader className='space-y-4'>
                     <CardTitle>
-                        Select Payment Method
+                        <p className='text-center font-bold text-xl'>Select Payment Method</p>
                     </CardTitle>
                     <p>Order #{order.id} Total: Ksh {order.total_price}</p>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='pt-6'>
                     {/* mpesa button */}
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     <Button
                     variant='outline'
                     onClick={handleMpesaPayment}
+                    className='flex items-center justify-center gap-3 h-10'
                     disabled={loading}
                     >
                         <div>
-                            <Phone size={24}/>
+                            <Phone size={20} className='shrink-0'/>
                         </div>
                         <div>
-                            <p>M-PESA</p>
+                            <p className='font-medium'>M-PESA</p>
                         </div>
 
                     </Button>
@@ -97,30 +99,21 @@ export default function PaymentMethod({order, onClose, User, fetchMarketData}){
                     <Button
                     variant='outline'
                     onClick={handleStripePayment}
+                    className='flex items-center justify-center gap-3 h-10'
                     disabled={loading}
                     >
                         <div>
-                            <CreditCard size={24}/>
+                            <CreditCard size={20} className='shrink-0'/>
                         </div>
                         <div>
-                            <p>Card / Paypal</p>
+                            <p className='font-medium'>Card / Paypal</p>
                         </div>
 
                     </Button>
-                    {/* {loading &&(
-                        <div className='flex items-center justify-center gap-2 text-sm'>
-                            <Loader2 className='w-4 h-4 animate-spin'/> Processing request ...
-                        </div>
-                    )} */}
+                    </div>
                 </CardContent>
                 <CardFooter>
-                    <Button
-                    variant='ghost'
-                    onClick={onClose}
-                    disabled={loading}
-                    >
-
-                    </Button>
+                    
                 </CardFooter>
             </Card>
 
