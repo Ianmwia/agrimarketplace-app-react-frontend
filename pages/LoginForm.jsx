@@ -7,6 +7,7 @@ import { Toast } from 'radix-ui';
 import { toast } from 'sonner';
 
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 export default function Login(){
     const {setUser} = useAuth()
@@ -81,7 +82,8 @@ export default function Login(){
                     <input className={inputClass} type="password" name="password" placeholder="password" onChange={handleChange} />
                 </div>
                 <div>
-                    <button className='bg-primary w-full rounded-lg text-primary-foreground text-[14px] px-5 py-2.5 text-center' type='submit'>Login</button>
+                    {/* <button className='bg-primary w-full rounded-lg text-primary-foreground text-[14px] px-5 py-2.5 text-center' type='submit'>Login</button> */}
+                    <Button type='submit'>Login</Button>
                 </div>
             </form>
             <div className='flex flex-col md:flex-row md:items-center md:mx-auto'>
