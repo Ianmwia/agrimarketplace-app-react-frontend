@@ -19,6 +19,7 @@ import ChangePassword from '../pages/ChangePassword'
 import Chat from '../chat/ChatBoard'
 import CreatePickUpPoint from '../map/PickUpPage'
 import UpdateProduce from '../dashboards/farmerspages/UpdateProduce'
+import StripeCheckout from '../dashboards/StripeCheckout'
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
             <Route path='/change-password' element={<ChangePassword/>}/>
             <Route path='/thread' element={<Chat/>}/>
             <Route path='/pickup/:orderId' element={<CreatePickUpPoint/>}/>
+            <Route path='/stripe-checkout' element={<StripeCheckout/>}/>
         
         <Route path='/farmer' element={
           <ProtectedRoute allowedRoles={['farmer']}>

@@ -1,8 +1,5 @@
 import { useState} from 'react';
 import API from '@/api';
-import { loadStripe } from '@stripe/stripe-js';
-import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
-import { useTheme } from 'next-themes';
 
 import { Dialog } from '@/components/ui/dialog';
 import { toast } from 'sonner';
@@ -12,15 +9,11 @@ import { X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
 
 export default function PaymentMethod({order, onClose, User, fetchMarketData}){
     const [loading, setLoading] = useState(false)
-    const [clientSecret, setClientSecret] = useState(null) //store backend
 
-    const {theme, resolvedTheme} = useTheme()
-    const isDark = resolvedTheme === 'dark' || theme === 'dark'
     const navigate = useNavigate()
 
     //mpesa payment
@@ -58,7 +51,14 @@ export default function PaymentMethod({order, onClose, User, fetchMarketData}){
         try {
             const res = await API.post(`stripe/pay/`, {order_id: order.id})
             if (res.data.clientSecret){
-                setClientSecret(res.data.clientSecret)
+                navigate('/stripe-checkout', {
+                    state: {
+                        clientSecret: res.data.clientSecret,
+                        orderId: order.id
+                    }
+
+                })
+                onClose()
             }
         } catch{
             toast.error('Could Not Reach stripe Checkout')
@@ -68,46 +68,6 @@ export default function PaymentMethod({order, onClose, User, fetchMarketData}){
         }
     }
 
-    //themes for stripe
-    const appearance = {
-        theme: isDark ? 'night' : 'stripe',
-        variables: {
-            colorPrimary: isDark ? '#eceef2' : '#46a758',
-            colorBackground: isDark ? '#1a1d23' : '#ffffff',
-            colorText: isDark ? '#f8fafc' : '#1a1d23',
-            colorDanger: '#df1b41',
-            fontFamily: 'Inter, system-ui, sans-serif',
-            borderRadius: '10px',
-        }
-    } 
-
-    // stripe embed ui
-    if (clientSecret){
-        return(
-            <div className='justify-center fixed inset-0 backdrop-blur-2xl z-50 p-4 overflow-y-auto'>
-                <Card className='relative w-full max-w-2xl shadow-lg border-none my-8'>
-                    <Button
-                    variant='ghost'
-                    size='icon'
-                    className='absolute right-2 top-2 z-50 h-8 w-8'
-                    onClick={()=> setClientSecret(null)}
-                    >
-                        <X/>
-                    </Button>
-                    <div className='p-2 md:p-6 min-h-100'>
-                        <EmbeddedCheckoutProvider
-                        stripe={stripePromise}
-                        options={{clientSecret}}
-                        appearance={appearance}
-                        key={`${clientSecret}-${isDark}`}
-                        >
-                        <EmbeddedCheckout/>
-                        </EmbeddedCheckoutProvider>
-                    </div>
-                </Card>
-            </div>
-        )
-    }
 
     return(
         <div className='flex items-center justify-center fixed inset-0  backdrop-blur-sm z-50 p-4'>
