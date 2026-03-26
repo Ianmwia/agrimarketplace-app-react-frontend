@@ -21,7 +21,7 @@ export default function StripeCheckout(){
         return(
             <div className='flex flex-col items-center justify-center min-h-screen'>
                 <p>No active Session</p>
-                <Button onClick={()=>navigate(-1)}>Go Back</Button>
+                <Button onClick={()=>navigate('/market')}>Go Back</Button>
             </div>
         )
     }
@@ -31,7 +31,7 @@ export default function StripeCheckout(){
         theme: isDark ? 'night' : 'stripe',
         variables: {
             colorPrimary: isDark ? '#eceef2' : '#46a758',
-            colorBackground: isDark ? '#1a1d23' : '#1a1d23',
+            colorBackground: isDark ? '#1a1d23' : '#ffffff',
             colorText: isDark ? '#f8fafc' : '#1a1d23',
             colorDanger: '#df1b41',
             fontFamily: 'Inter, system-ui, sans-serif',
@@ -43,18 +43,17 @@ export default function StripeCheckout(){
     return(
 
         <div className='min-h-screen bg-background text-foreground flex flex-col'>
-            <div className='p-4 border-b flex items-center gap-3'>
+            <div className='p-2 flex items-center gap-2'>
                 <Button
-                onClick={()=> navigate(-1)}
+                onClick={()=> navigate('/market')}
                 >
                     <ArrowLeft className='h-5 w-5'/>
-                <p className='font-bold text-lg'>Complete Payment</p>
                 </Button>
 
             </div>
 
-                <main className='flex-1 flex justify-center p-4 md:p-8'>
-                    <div className='w-full max-w-3xl'>
+                <main className={`flex-1 flex justify-center p-1 md:p-2 mt-2 ${isDark ? 'dark' : ''}`}>
+                    <div className='w-full max-w-3xl bg-background [&iframe]:bg-transparent!'>
                     <EmbeddedCheckoutProvider
                     stripe={stripePromise}
                     options={{clientSecret}}
