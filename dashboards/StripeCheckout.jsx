@@ -52,8 +52,8 @@ export default function StripeCheckout(){
 
             </div>
 
-                <main className={`flex-1 flex justify-center p-1 md:p-2 mt-2 ${isDark ? 'dark' : ''}`}>
-                    <div className='w-full max-w-3xl bg-background [&iframe]:bg-transparent!'>
+                <main className={`flex-1 w-full max-w-6xl mx-auto flex flex-col md:flex-row gap-6 p-1 md:p-2 mt-2 ${isDark ? 'dark' : ''}`}>
+                    <div className='w-full max-w-6xl bg-background [&iframe]:bg-transparent!'>
                     <EmbeddedCheckoutProvider
                     stripe={stripePromise}
                     options={{clientSecret}}
