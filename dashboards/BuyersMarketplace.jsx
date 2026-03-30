@@ -81,19 +81,7 @@ export default function Marketplace(){
         }
     }, [tab, fetchOrderHistory])
     
-    useEffect(()=>{
-        //polling
-        let interval;
-        if (tab === 'orders'){
-                interval =  setInterval(()=>{
-                    fetchOrderHistory(currentOrderPage)
-                }, 5000)
-            }
 
-        return () => {
-            if (interval) clearInterval(interval)
-        }
-    }, [tab, fetchOrderHistory, currentOrderPage])
 
     const handlePlaceOrder = async (product) => {
         const quantity = parseInt(orderQuantity[product.id]) || 1;
@@ -101,11 +89,14 @@ export default function Marketplace(){
         const totalAmount = quantity * price
 
         try {
-            await API.post('order/', {
+            const res = await API.post('order/', {
                 batch: product.id,
                 quantity: quantity,
                 //status: 'pending'
             });
+
+            if (res.data.orders) setOrders(res.data.orders)
+            if (res.data.available_batches) setProducts(res.data.orders)
             toast.success(`Order for ${product.produce_name} placed, you ordered ${quantity} Kilograms for the, Total Amount of Ksh ${totalAmount}`);
             fetchMarketData()
         } catch (error) {
@@ -131,10 +122,12 @@ export default function Marketplace(){
 
     const handleCancelOrder = async (orderId) => {
         try {
-            await API.post(`order/${orderId}/cancel_order/`)
+            const res = await API.post(`order/${orderId}/cancel_order/?page_url=${encodeURIComponent(currentOrderPage)}`)
             toast.success('Order Canceled');
-            setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId))
-            fetchMarketData();    
+            if (res.data.orders) setOrders(res.data.orders)
+            if (res.data.available_batches) setProducts(res.data.orders)
+            //setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId))
+            //fetchMarketData();    
         } catch {
             toast.error('Failed to cancel Order')
             
@@ -165,7 +158,6 @@ export default function Marketplace(){
                     <div className='rounded-full'>
                         
                         <SearchMarketplace onSearch={setSearchQuery}/>
-                        =
                     </div>
                 )}
 
