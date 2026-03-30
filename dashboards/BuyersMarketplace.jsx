@@ -18,40 +18,82 @@ export default function Marketplace(){
     const [orders, setOrders] = useState([])
     const [orderQuantity, setOrderQuantity] = useState({}); //stores productId and quantity
     const [searchQuery, setSearchQuery] = useState('')
+    const [debounceQuery, setDebounceQuery] = useState('')
     const [selectOrder, setSelectOrder] = useState(null)
+    const [user, setUser] = useState(null)
+    // pagination
+    const [currentOrderPage, setCurrentOrderPage] = useState('order/')
+    const [nextPage, setNextPage] = useState(null)
+    const [prevPage, setPrevPage] = useState(null)
+    const [loading, setLoading] = useState(false)
 
 
-   
+   useEffect(()=> {
+    const handler = setTimeout(()=>{
+        setDebounceQuery(searchQuery)
+    }, 500)
+    return ()=> clearTimeout(handler)
+   }, [searchQuery])
 
     const fetchMarketData = useCallback(async () => {
+        if (loading) return
+        setLoading(true)
         try {
-            const query = (typeof searchQuery === 'string') ? searchQuery:''
-            const url =  searchQuery ? `order/?q=${encodeURIComponent(query)}` : 'order/';
+            //const query = (typeof searchQuery === 'string') ? searchQuery:''
+            const url =  debounceQuery 
+            ? `order/?q=${encodeURIComponent(debounceQuery)}` 
+            : 'order/?page_size=25';
             const res = await API.get(url)
 
-            setProducts(res.data.available_batches || []);
-            setOrders(res.data.orders || []);
+            setProducts(res.data.available_batches || res.data.available_produce || []);
             // console.log(res.data)
         } catch {
             //toast.error('Failed to fetch data')
+        } finally {
+            setLoading(true)
+            setLoading(false)
         }
-    },[searchQuery]);
+    },[debounceQuery]);
+
+    const fetchOrderHistory = useCallback(async (url = 'order/') => {
+        try {
+            const res = await API.get(url)
+            setOrders(res.data.orders || []);
+            // console.log(res.data)
+
+            setNextPage(res.data.next || null)
+            setPrevPage(res.data.previous || null)
+            setCurrentOrderPage(url)
+        } catch {
+            //toast.error('Failed to fetch Order History')
+        }
+    },[]);
+
+    useEffect(()=> {
+        if (tab === 'market'){
+            fetchMarketData()
+        }
+    }, [tab, fetchMarketData])
+
+    useEffect(()=> {
+        if (tab === 'orders'){
+            fetchOrderHistory()
+        }
+    }, [tab, fetchOrderHistory])
     
     useEffect(()=>{
-        const load = async () => {
-            await fetchMarketData()
-        }
-            load();
-        //poll to refresh cook to waiter
-        const interval = setInterval(()=>{
-            if (tab === 'orders'){
-                load()
+        //polling
+        let interval;
+        if (tab === 'orders'){
+                interval =  setInterval(()=>{
+                    fetchOrderHistory(currentOrderPage)
+                }, 5000)
             }
 
-        }, 5000)
-
-        return () => clearInterval(interval)
-    },[fetchMarketData, tab]);
+        return () => {
+            if (interval) clearInterval(interval)
+        }
+    }, [tab, fetchOrderHistory, currentOrderPage])
 
     const handlePlaceOrder = async (product) => {
         const quantity = parseInt(orderQuantity[product.id]) || 1;
@@ -72,6 +114,33 @@ export default function Marketplace(){
         }
     };
 
+    useEffect(()=> {
+        const fetchUser = async () => {
+            try {
+                const res = await API.get('me/')
+                setUser(res.data)
+            } catch (error) {
+                console.log('Failed to fetch User', error)
+                
+            }
+        }
+        fetchUser()
+    }, [])
+
+
+
+    const handleCancelOrder = async (orderId) => {
+        try {
+            await API.post(`order/${orderId}/cancel_order/`)
+            toast.success('Order Canceled');
+            setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId))
+            fetchMarketData();    
+        } catch {
+            toast.error('Failed to cancel Order')
+            
+        }
+    }
+
 
 
 
@@ -81,20 +150,22 @@ export default function Marketplace(){
             {/*tabs */}
             <div className='flex justify-center gap-4 mb-10'>
                 <Button onClick={()=> setTab('market')}
-                    className={`px-6 font-bold ${tab === 'market'}`}>
+                    className={`px-6 font-bold rounded-full ${tab === 'market'}`}>
                         <ShoppingCart className='mr-2 h-4 w-4'/>Marketplace
                 </Button>
 
                 <Button onClick={()=> setTab('orders')}
-                    className={`px-6 font-bold ${tab === 'orders'}`}>
+                    className={`px-6 rounded-full  font-bold ${tab === 'orders'}`}>
                         <Leaf className='mr-2 h-4 w-4'/>My Orders
                 </Button>
             </div>
             {/* search bar */}
             <div>
                 {tab === 'market' &&(
-                    <div>
+                    <div className='rounded-full'>
+                        
                         <SearchMarketplace onSearch={setSearchQuery}/>
+                        =
                     </div>
                 )}
 
@@ -202,6 +273,20 @@ export default function Marketplace(){
                                     }>
                                         {order.status.toUpperCase()}
                                     </Badge>
+                                    {/* cancel */}
+                                    {order.status === 'pending' && user?.role === 'buyer' && (
+                                        <div className=' flex flex-col items-center gap-2'>
+                                        <Button
+                                        size='sm'
+                                        variant='destructive'
+                                        onClick={()=> handleCancelOrder(order.id)}
+                                        >Cancel Order
+                                        </Button>
+                                        </div>
+                                        )}
+                                    {/* cancel */}
+
+
                                     {order.status === 'accepted' && (
                                         <div className=' flex flex-col items-center gap-2'>
                                         <Button
@@ -249,6 +334,26 @@ export default function Marketplace(){
                 User={{ phone:selectOrder.buyer_phone }}
                 />
             )}
+
+            {/* paginate */}
+            <div className='m-2 mt-4'>
+        <Button
+        variant='outline'
+        disabled={!prevPage}
+        onClick={()=> fetchOrderHistory(prevPage)}
+        className='mr-2'
+        >
+            Previous
+        </Button>
+        
+        <Button
+        variant='outline'
+        disabled={!nextPage}
+        onClick={()=>fetchOrderHistory(nextPage)}
+        className='ml-2'
+        >
+            Next Page</Button>
+       </div>
         </div>
     )
 }
