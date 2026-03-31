@@ -19,7 +19,7 @@ export default function FarmerDashboard(){
             <div className=' flex justify-center gap-4 mb-10 flex-wrap'>
                 <Button
                 onClick={()=> setTab('produce')}
-                className={`px-6 font-bold ${tab === "produce"
+                className={`px-6 rounded-full font-bold ${tab === "produce"
                     }`}
                 >
                     Create Produce
@@ -27,28 +27,28 @@ export default function FarmerDashboard(){
 
                 <Button
                 onClick={()=> setTab('produce-list')}
-                className={`px-6 font-bold ${tab === "produce-list"
+                className={`px-6 rounded-full font-bold ${tab === "produce-list"
                     }`}
                 >
                     View Your Produce
                 </Button>
                 <Button
                 onClick={()=> setTab('orders')}
-                className={`px-6 font-bold ${tab === "orders"
+                className={`px-6 rounded-full font-bold ${tab === "orders"
                     }`}
                 >
                     Orders
                 </Button>
                 <Button
                 onClick={()=> setTab('report')}
-                className={`px-6 font-bold ${tab === "report"
+                className={`px-6 rounded-full font-bold ${tab === "report"
                     }`}
                 >
                     File A report
                 </Button>
                 <Button
                 onClick={()=> setTab('report-created')}
-                className={`px-6 font-bold ${tab === "report-created"
+                className={`px-6 rounded-full font-bold ${tab === "report-created"
                     }`}
                 >
                     View Reports Created

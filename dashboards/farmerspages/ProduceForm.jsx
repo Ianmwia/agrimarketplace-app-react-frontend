@@ -82,7 +82,7 @@ export default function ProduceForm(){
     }
 
     return(
-        <Card className='border-border bg-card shadow-sm'>
+        <Card className='pt-0 border-border bg-card shadow-sm'>
             <CardHeader className='p-5 border-b bg-muted/30'>
             <CardTitle className='text-lg font-bold'>
                 Create Harvest

@@ -61,13 +61,15 @@ export default function ProduceList(){
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                     {produce.map((item) => (
                         <Card key={item.id} 
-                        className='border-border bg-card shadow-sm pt-0'>
+                        className='border-border bg-card shadow-sm pt-0 pb-0'>
 
                             {/*image*/}
-                            <div className='aspect-square bg-muted overflow-hidden rounded-t-lg'>
-                                <img src={item.image} alt={item.name} className='object-cover w-full h-full' loading='lazy'/>
+                            <div className='relative aspect-6/4 bg-muted overflow-hidden rounded-t-lg'>
+                                <img src={item.image} alt={item.name} 
+                                className='object-cover w-full h-full hover:scale-105 transition-transform duration-500' loading='lazy'/>
 
                             </div>
+                            
                             <CardHeader className='p-5 border-b bg-muted/30'>
                             <div className='flex justify-between items-start gap-2'>
                             <CardTitle>
@@ -86,7 +88,7 @@ export default function ProduceList(){
                             </div>
                             </CardHeader>
 
-                            <CardContent className='p-5 space-y-1'>
+                            <CardContent className='p-5  space-y-1'>
                                 {/* <div className='flex gap-2  justify-between'>
                                     <p className='text-sm text-muted-foreground'>Farmer</p>
                                     <p className='text-lg font-bold'>{item.farmer_name}</p>
