@@ -23,8 +23,9 @@ export default function PaymentMethod({order, onClose, User, fetchMarketData}){
             toast.error('Before paying, Please add a phone number to your profile account')
             setTimeout(() => {
                 navigate('/profile')
+                onClose()
             }, 4000);
-            onClose()
+            
             return
         }
 
