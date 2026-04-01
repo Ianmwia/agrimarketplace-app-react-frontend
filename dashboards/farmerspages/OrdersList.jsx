@@ -5,6 +5,7 @@ import API from '@/api'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from 'lucide-react'
+import { Download } from 'lucide-react'
 import RejectDialog from './RejectDialogBox'
 
 export default function OrdersList(){
@@ -12,6 +13,7 @@ export default function OrdersList(){
     const [selectOrder, setSelectOrder] = useState(null)
     const [nextPage, setNextPage] = useState(null)
     const [prevPage, setPrevPage] = useState(null)
+    const [user, setUser] = useState(null)
 
     const fetchOrders = useCallback(async (endpoint) => {
         if (!endpoint) return;
@@ -57,8 +59,56 @@ export default function OrdersList(){
                 }    
             }
 
+            //user save to csv
+        useEffect(()=> {
+        const fetchUser = async () => {
+            try {
+                const res = await API.get('me/')
+                setUser(res.data)
+            } catch (error) {
+                console.log('Failed to fetch User', error)
+                
+            }
+            }
+            fetchUser()
+        }, [])
+
+        const handleExportCSV = async () => {
+                try {
+                    const response = await API.get('order/export_csv', {
+                        responseType: 'blob'
+                    })
+        
+                    const url = window.URL.createObjectURL(new Blob([response.data]))
+                    const link = document.createElement('a')
+                    link.href = url
+        
+                    const buyerName = user?.first_name ? `${user.first_name}_${user.last_name}` : 'My'
+                    const dateStr = new Date().toISOString().split('T')[0]
+        
+                    link.setAttribute('download', `${buyerName}_Orders_${dateStr}.csv`)
+        
+                    document.body.appendChild(link)
+                    link.click()
+        
+                    link.remove()            
+                } catch  {
+                    toast.error('Failed to export to csv')
+                }
+            }
+
     return(
         <div>
+            <div className='mb-3'>
+            <Button
+            variant='outline'
+            onClick={handleExportCSV}
+            className='w-full sm:w-40 font-bold'
+            >
+                <Download className='mr-2 h-4 w-4'/>
+                Export to csv
+            </Button>
+        </div>
        <Card className=''>
         <CardHeader>
             <CardTitle>
