@@ -19,7 +19,7 @@ export default function PaymentMethod({order, onClose, User, fetchMarketData}){
     //mpesa payment
     const handleMpesaPayment = async () => {
         
-        if(!User?.phone){
+        if(!User?.phone || User.phone.length <= 7){
             toast.error('Before paying, Please add a phone number to your profile account')
             setTimeout(() => {
                 navigate('/profile')
