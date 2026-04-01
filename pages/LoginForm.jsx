@@ -8,6 +8,8 @@ import { toast } from 'sonner';
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Eye, EyeOff } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 export default function Login(){
     const {setUser} = useAuth()
@@ -20,6 +22,9 @@ export default function Login(){
     const [errors, setErrors] = useState({})
     const navigate = useNavigate();
     {/*navigate e.g navigate('/signup'); */}
+
+    const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     
 
     const handleChange = (e) => {
@@ -34,6 +39,8 @@ export default function Login(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
+        setErrors({})
 
          try {
             const res = await API.post('login/', formData);
@@ -57,7 +64,10 @@ export default function Login(){
 
         } catch (error) {
             
-            setErrors(error.response?.data || {detail: "invalid credentials"});
+            const backendError = error.response?.data?.error || "Invalid credentials"
+            setErrors({detail: backendError});
+            setLoading(false)
+            
            
         }
     };
@@ -78,12 +88,31 @@ export default function Login(){
                 <div>
                     <input className={inputClass} type="email" name="email" placeholder="email" onChange={handleChange} />
                 </div>
-                <div>
-                    <input className={inputClass} type="password" name="password" placeholder="password" onChange={handleChange} />
+                <div className='relative'>
+                    <input className={inputClass} type={showPassword ? "text" : "password"} name="password" placeholder="password" onChange={handleChange} />
+                    <Button
+                    type = 'button'
+                    variant='ghost'
+                    size='sm'
+                    className='absolute right-2 top-2 h-8 w-8 items-center justify-centre hover:bg-transparent bg-secondary'
+                    onClick={()=> setShowPassword((prev) => !prev)}
+                    >{showPassword ? (
+                        <EyeOff className='h-4 w-4'/>
+                    ): (
+                        <Eye className='h-4 w-4'/>
+                    )}</Button>
                 </div>
                 <div>
                     {/* <button className='bg-primary w-full rounded-lg text-primary-foreground text-[14px] px-5 py-2.5 text-center' type='submit'>Login</button> */}
-                    <Button type='submit' className='w-full'>Login</Button>
+                    <Button type='submit' className='w-full hover:cursor-pointer' disabled={loading}>
+                        {loading ? (
+                            <>
+                            <Loader2/>
+                            </>
+                        ):(
+                            "Login"
+                        )}
+                        </Button>
                 </div>
             </form>
             <div className='flex flex-col md:flex-row md:items-center md:mx-auto'>
