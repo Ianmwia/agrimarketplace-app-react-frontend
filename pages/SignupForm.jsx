@@ -5,6 +5,10 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/useAuth';
+import { Eye, EyeClosed } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ChevronDown } from 'lucide-react';
 
 export default function SignUp(){
     const [formData, setFormData] = useState({
@@ -22,6 +26,9 @@ export default function SignUp(){
     const [roleOptions, setRoleOptions] = useState([])
     const [fieldOptions, setFieldOptions] = useState([])   
     const navigate = useNavigate()
+
+    const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
     useEffect(()=> {
         API.get("user-choices").then(res=> {
@@ -49,6 +56,7 @@ export default function SignUp(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
 
 
         try {
@@ -105,19 +113,34 @@ export default function SignUp(){
                 <div>
                     <input className={ringGlow} type="email" name="email" placeholder="email" onChange={handleChange} required autoComplete='email' />
                 </div>
-                <div>
+                <div className='relative'>
                     {errors.password && (
                         <p className='text-destructive text-sm text-center mb-2'>{errors.password?.[0]}</p>
                     ) }
-                    <input className={`${ringGlow} ${errors.password ? 'border-destructive': 'border-input'}`} type="password" name="password" placeholder="password" onChange={handleChange} required autoComplete='new-password'/>
+                    <input className={`${ringGlow} ${errors.password ? 'border-destructive': 'border-input'}`} type={showPassword ? "text" : "password"} name="password" placeholder="password" onChange={handleChange} required autoComplete='new-password'/>
+                    <Button
+                    type = 'button'
+                    variant='ghost'
+                    size='sm'
+                    className='absolute right-2 top-2 h-8 w-8 items-center justify-centre hover:bg-transparent bg-secondary'
+                    onClick={()=> setShowPassword((prev) => !prev)}
+                    >{showPassword ? (
+                        <EyeOff className='h-4 w-4'/>
+                    ): (
+                        <Eye className='h-4 w-4'/>
+                    )}</Button>
+
                 </div>
-                <div>
-                    <select className={ringGlow} name="role" value={formData.role} onChange={handleChange}>
+                <div className='relative w-full'>
+                    <select className={`${ringGlow} appearance-none pr-10`} name="role" value={formData.role} onChange={handleChange}>
                         <option value="">Select Role</option>
                         {roleOptions.map((r)=> (
                             <option key={r} value={r}>{r}</option>
                         ))}
                     </select>
+                    <div className='pointer-events-none absolute flex right-2 rounded-sm top-2 h-8 w-8 items-center justify-center bg-secondary'>
+                        <ChevronDown className='h-4 w-4'/>
+                    </div>
                 </div>
                 <div>
                     {formData.role === 'field_officer' && (
@@ -134,7 +157,15 @@ export default function SignUp(){
                     <input className={ringGlow} type="text" name="location" placeholder="location" onChange={handleChange} />
                 </div>
                 <div>
-                    <button className='bg-primary w-full rounded-lg text-primary-foreground hover:opacity-90 transition-colors text-[14px] px-5 py-2.5 text-center' type='submit'>Register</button>
+                    <button className='bg-primary w-full rounded-lg text-primary-foreground hover:opacity-90 transition-colors text-[14px] px-5 py-2.5 text-center hover:cursor-pointer' type='submit' disabled={loading}>
+                        {loading ? (
+                            <>
+                            <Loader2/>
+                            </>
+                        ):(
+                            "Register"
+                        )}
+                        </button>
                 </div>
             </form>
             <div className='p-2'>
