@@ -8,12 +8,13 @@ export default function ProtectedRoute({children, allowedRoles}){
 
     if (loading){
         return (
-            <div className=' flex flex-col space-y-3 p-8'>
-                <Skeleton className='h-31.25 w-62.5 rounded-xl'/>
-                    <div className='space-y-2'>
-                        <Skeleton className='h-4 w-62.5' />
-                        <Skeleton className='h-4 w-62.5' />
-                    </div>
+            <div className='flex h-screen w-full flex-col items-center justify-center space-y-4 p-8'>
+                <div className='relative flex items-center justify-center'>
+                <Skeleton className='h-32 w-32 rounded-full'/>
+                    <span className='absolute text-xl font-bold tracking-tighter text-muted-foreground animate-pulse'>
+                        KILIMO
+                    </span>
+                </div>
             </div>
         )
     }
