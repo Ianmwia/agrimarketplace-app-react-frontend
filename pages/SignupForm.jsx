@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/useAuth';
-import { Eye, EyeClosed } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
