@@ -8,16 +8,21 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true) //start as true to prevent url type set null
     
     useEffect(()=> {
-        API.get('me/')
-        .then(res => {
-            setUser(res.data)
-        })
-        .catch(()=> {
-            setUser(null)
-        })
-        .finally(()=>{
-            setLoading(false) //stop loading no matter what
-        })
+        const initializeAuth = async () => {
+            try {
+                //priming get cookie
+                await API.get('csrf/')
+                //ask question, ho who is you
+                const res = await API.get('me/')
+                setUser(res.data)
+            } catch {
+                setUser(null)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        initializeAuth()
     }, [])
 
     return(
