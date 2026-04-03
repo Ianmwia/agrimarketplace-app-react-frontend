@@ -3,7 +3,6 @@ import API from '../src/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/useAuth';
 
-import { Toast } from 'radix-ui';
 import { toast } from 'sonner';
 
 import { Link } from 'react-router-dom';
@@ -64,11 +63,11 @@ export default function Login(){
 
         } catch (error) {
             
-            const backendError = error.response?.data?.error || "Invalid credentials"
+            const backendError = error.response?.data?.detail || error.response?.data?.error || "Invalid credentials"
             setErrors({detail: backendError});
-            setLoading(false)
             
-           
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -86,15 +85,15 @@ export default function Login(){
                     <p className='text-destructive text-sm text-center'>{errors.detail}</p>
                 )}
                 <div>
-                    <input className={inputClass} type="email" name="email" placeholder="email" onChange={handleChange} />
+                    <input className={inputClass} type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} autoComplete='email' disabled={loading} required/>
                 </div>
                 <div className='relative'>
-                    <input className={inputClass} type={showPassword ? "text" : "password"} name="password" placeholder="password" onChange={handleChange} />
+                    <input className={inputClass} type={showPassword ? "text" : "password"} name="password" value={formData.password} placeholder="Password" onChange={handleChange} disabled={loading}/>
                     <Button
                     type = 'button'
                     variant='ghost'
                     size='sm'
-                    className='absolute right-2 top-2 h-8 w-8 items-center justify-centre hover:bg-transparent bg-secondary'
+                    className='absolute right-2 top-2 h-8 w-8 items-center justify-center hover:bg-transparent bg-secondary'
                     onClick={()=> setShowPassword((prev) => !prev)}
                     >{showPassword ? (
                         <EyeOff className='h-4 w-4'/>
@@ -107,7 +106,7 @@ export default function Login(){
                     <Button type='submit' className='w-full hover:cursor-pointer' disabled={loading}>
                         {loading ? (
                             <>
-                            <Loader2/>
+                            <Loader2 className='mx-auto h-5 w-5 animate-spin'/>
                             </>
                         ):(
                             "Login"
