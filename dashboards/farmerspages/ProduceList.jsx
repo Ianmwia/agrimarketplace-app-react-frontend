@@ -36,14 +36,25 @@ export default function ProduceList(){
 
     //delete produce
     const deleteProduce = async(id) => {
-        if (!confirm("Are You Sure You want to delete this produce")) return
-
-        try {
-            await API.delete(`produce/${id}`)
-            toast.success('produce deleted Successfully')
-        } catch {
-            toast.error('Failed to delete Produce')
-        }
+        toast("Are You Sure You want to delete this produce", {
+            description: 'This action is irreversible',
+            action: {
+                label: 'Delete',
+                onClick: async () => {
+                    try {
+                        await API.delete(`produce/${id}/`)
+                        toast.success('produce deleted Successfully')
+                        await fetchProduce()
+                    } catch {
+                        toast.error('Failed to delete Produce')
+                    }
+                }
+            },
+            cancel: {
+                label: "Cancel",
+                onClick: () => {}
+            }
+        })
     }
    
 
