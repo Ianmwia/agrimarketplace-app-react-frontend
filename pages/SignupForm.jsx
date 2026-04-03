@@ -49,9 +49,11 @@ export default function SignUp(){
             return newData;
         });
 
-        
-
-        setErrors({})
+        setErrors( prevErrors => {
+            const newErrors = {...prevErrors}
+            delete newErrors[name]
+            return newErrors
+        })
     };
 
     const handleSubmit = async (e) => {
@@ -71,7 +73,15 @@ export default function SignUp(){
             toast.success('Account Created Successfully')
             {/*redirect */}
             {/*clear formdata */}
-            setFormData({})
+            setFormData({
+                first_name: "",
+                last_name: "",
+                email: "",
+                password: "",
+                role: "",
+                field: "",
+                location: "",
+            })
             {/*redirect navigate */}
             if (userRole === 'farmer'){
                 navigate('/farmer')
@@ -89,10 +99,13 @@ export default function SignUp(){
             }else{
                 setErrors({ non_field_errors: 'An unexpected error occurred'})
             }
+        } finally{
+            setLoading(false)
         }
     };
 
-    const ringGlow = 'bg-background border border-input text-foreground rounded-lg w-full p-2.5 outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all'
+    const ringGlow = 'appearance-none bg-background border border-input text-foreground rounded-lg w-full p-2.5 outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all'
+    const errorText = 'text-destructive text-sm text-center mt-1'
 
     return(
         <div className='p-2 flex min-h-screen items-center justify-center'>
@@ -104,63 +117,84 @@ export default function SignUp(){
                 { errors.non_field_errors && (
                     <p className='text-destructive text-sm text-center mb-2'>{errors.non_field_errors}</p>
                 )}
-                <div>
-                    <input className={ringGlow} type="text" name="first_name" placeholder="first name" onChange={handleChange} />
+                {/* names */}
+                <div className='mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                    <div>
+                    <input className={`${ringGlow} ${errors.first_name ? "border-destructive": ""}`} value={formData.first_name} type="text" name="first_name" placeholder="First Name" onChange={handleChange} disabled={loading} required/>
+                    {errors.first_name?.[0] && <p className={errorText}>{errors.first_name?.[0]}</p>}
+                    </div>
+                    <div>
+                    <input className={`${ringGlow} ${errors.last_name ? "border-destructive": ""}`} value={formData.last_name} type="text" name="last_name" placeholder="Last Name" onChange={handleChange} disabled={loading} required/>
+                    {errors.last_name?.[0] && <p className={errorText}>{errors.last_name?.[0]}</p>}
+                    </div>
                 </div>
+                {/* email */}
                 <div>
-                    <input className={ringGlow} type="text" name="last_name" placeholder="last name" onChange={handleChange} />
+                    <input className={`${ringGlow} ${errors.email ? "border-destructive": ""}`} value={formData.email} type="email" name="email" placeholder="Email" onChange={handleChange} required autoComplete='email' disabled={loading}/>
+                    {errors.email?.[0] && <p className={errorText}>{errors.email?.[0]}</p>}
                 </div>
-                <div>
-                    <input className={ringGlow} type="email" name="email" placeholder="email" onChange={handleChange} required autoComplete='email' />
-                </div>
+                <div className='flex flex-col space-y-1'>
                 <div className='relative'>
-                    {errors.password && (
-                        <p className='text-destructive text-sm text-center mb-2'>{errors.password?.[0]}</p>
-                    ) }
-                    <input className={`${ringGlow} ${errors.password ? 'border-destructive': 'border-input'}`} type={showPassword ? "text" : "password"} name="password" placeholder="password" onChange={handleChange} required autoComplete='new-password'/>
+                    <input className={`${ringGlow} ${errors.password ? 'border-destructive': 'border-input'}`} type={showPassword ? "text" : "password"} name="password" placeholder="Password" onChange={handleChange} required autoComplete='new-password' disabled={loading}/>
                     <Button
                     type = 'button'
                     variant='ghost'
                     size='sm'
-                    className='absolute right-2 top-2 h-8 w-8 items-center justify-centre hover:bg-transparent bg-secondary'
+                    className='absolute right-2 top-2 h-8 w-8 items-center justify-center hover:bg-transparent bg-secondary'
                     onClick={()=> setShowPassword((prev) => !prev)}
                     >{showPassword ? (
                         <EyeOff className='h-4 w-4'/>
                     ): (
                         <Eye className='h-4 w-4'/>
                     )}</Button>
-
+                </div>
+                {errors.password && (
+                        <p className={errorText}>{errors.password?.[0]}</p>
+                    ) }
                 </div>
                 <div className='relative w-full'>
-                    <select className={`${ringGlow} appearance-none pr-10`} name="role" value={formData.role} onChange={handleChange}>
+                    <select className={`${ringGlow} ${errors.role ? "border-destructive": ""}`} name="role" value={formData.role} onChange={handleChange} disabled={loading}>
                         <option value="">Select Role</option>
+                        
                         {roleOptions.map((r)=> (
-                            <option key={r} value={r}>{r}</option>
+                            <option key={r.value} value={r.value}>{r.label}</option>
                         ))}
                     </select>
                     <div className='pointer-events-none absolute flex right-2 rounded-sm top-2 h-8 w-8 items-center justify-center bg-secondary'>
                         <ChevronDown className='h-4 w-4'/>
                     </div>
+                    {errors.role && (
+                        <p className={errorText}>
+                        {errors.role?.[0]?.includes('is not a valid choice') ?"Please select a role": errors.role?.[0] }
+                        </p>
+                    )}
                 </div>
                 <div>
                     {formData.role === 'field_officer' && (
-                    <select className={ringGlow} name="field" value={formData.field} onChange={handleChange}>
+                        <div className='relative w-full'>
+                    <select className={`${ringGlow} ${errors.field ? "border-destructive": ""}`} name="field" value={formData.field} onChange={handleChange} disabled={loading}>
                         <option value="">Select Field</option>
                         {fieldOptions.map((f)=> (
-                            <option key={f} value={f}>{f}</option>
+                            <option key={f.value} value={f.value}>{f.label}</option>
                         ))}
                     </select>
+                    <div className='pointer-events-none absolute flex right-2 rounded-sm top-2 h-8 w-8 items-center justify-center bg-secondary'>
+                        <ChevronDown className='h-4 w-4'/>
+                    </div>
+                    {errors.field?.[0] && <p className={errorText}>{errors.field?.[0]}</p>}
+                    </div>
                     )}
                 </div>
 
                 <div>
-                    <input className={ringGlow} type="text" name="location" placeholder="location" onChange={handleChange} />
+                    <input className={`${ringGlow} ${errors.location ? "border-destructive": ""}`} value={formData.location} type="text" name="location" placeholder="Location" onChange={handleChange} disabled={loading}/>
+                    {errors.location?.[0] && <p className={errorText}>{errors.location?.[0]}</p>}
                 </div>
                 <div>
-                    <button className='bg-primary w-full rounded-lg text-primary-foreground hover:opacity-90 transition-colors text-[14px] px-5 py-2.5 text-center hover:cursor-pointer' type='submit' disabled={loading}>
+                    <button className='bg-primary w-full rounded-lg text-primary-foreground hover:opacity-90 transition-colors text-[14px] px-5 py-2.5 flex items-center justify-center hover:cursor-pointer' type='submit' disabled={loading}>
                         {loading ? (
                             <>
-                            <Loader2/>
+                            <Loader2 className='mx-auto h-5 w-5 animate-spin'/>
                             </>
                         ):(
                             "Register"
