@@ -37,7 +37,7 @@ API.interceptors.request.use(async (config) => {
         //if (!) do not call always just when no token is available
         if (!csrfToken){
             try{
-                const response = await API.get(`${baseURL}csrf/`, {withCredentials:true})
+                const response = await axios.get(`${baseURL}csrf/`, {withCredentials:true})
                 csrfToken = response.data.csrfToken
             }catch (error){
                 console.error("csrf fetch failed", error)
