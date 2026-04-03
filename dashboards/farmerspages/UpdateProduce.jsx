@@ -74,7 +74,7 @@ export default function UpdateProduce(){
                 await API.patch(`produce/${id}/`, payload)
             }
             toast.success('Produce updated successfully')
-            navigate('/farmer')
+            navigate('/farmer', {state: {activeTab : 'produce-list'}})
         } catch{
             toast.error('Failed to update Produce')  
         } finally{
