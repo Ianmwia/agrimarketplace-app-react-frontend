@@ -88,7 +88,7 @@ export default function Login(){
                     <input className={inputClass} type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} autoComplete='email' disabled={loading} required/>
                 </div>
                 <div className='relative'>
-                    <input className={inputClass} type={showPassword ? "text" : "password"} name="password" value={formData.password} placeholder="Password" onChange={handleChange} disabled={loading}/>
+                    <input className={inputClass} type={showPassword ? "text" : "password"} name="password" value={formData.password} placeholder="Password" onChange={handleChange} disabled={loading} autoComplete='current-password'/>
                     <Button
                     type = 'button'
                     variant='ghost'
