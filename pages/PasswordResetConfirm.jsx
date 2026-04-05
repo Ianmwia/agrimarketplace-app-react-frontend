@@ -21,7 +21,7 @@ export default function PasswordResetConfirm(){
 
         try {
             
-            await API.post('password/reset/confirm/', {
+            await API.post(`password/reset/confirm/${uid}/${token}`, {
                 uid,
                 token,
                 ...formData
