@@ -5,4 +5,4 @@ Allow: /api/produce/
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap:"https://agri-marketplace-app-react.vercel.app/sitemap.xml",
+Sitemap: https://agri-marketplace-app-react.vercel.app/sitemap.xml
