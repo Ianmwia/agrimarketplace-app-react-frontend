@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Moon, Sun, User, LogOut, X, Home, Lock, Menu } from 'lucide-react';
+import { Moon, Sun, Monitor, User, LogOut, X, Home, Lock, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -30,13 +30,25 @@ const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, naviga
         //icons
         return(
             <div className={`flex items-center gap-3 ${isMobile ?  "flex-col scale-150 mt-4" : ""}`}>
-                <Button variant='ghost' size='icon'
-                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                >
-                    <Sun className='h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0'></Sun>
-                    <Moon className='absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100'></Moon>
-                    <span className='sr-only'>Toggle theme</span>
-                </Button>   
+                {/* Theme dropdown */}
+                   <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant='ghost' size='icon'>
+                            {theme  === 'light' && <Sun className='h-5 w-5'/>}
+                            {theme  === 'dark' && <Moon className='h-5 w-5'/>}
+                            {theme  === 'system' && <Monitor className='h-5 w-5'/>}
+                            <span className='sr-only'>Toggle Theme</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align='end'>
+                        <DropdownMenuItem onClick={()=> setTheme('light')}>
+                            <Sun className='mr-2 h-4 w-4'/> Light</DropdownMenuItem>
+                        <DropdownMenuItem onClick={()=> setTheme('dark')}>
+                            <Moon className='mr-2 h-4 w-4'/> Dark</DropdownMenuItem>
+                        <DropdownMenuItem onClick={()=> setTheme('system')}>
+                            <Monitor className='mr-2 h-4 w-4'/> System</DropdownMenuItem>
+                    </DropdownMenuContent>
+                    </DropdownMenu> 
 
                 {/*dropdown */}
             {user && (
