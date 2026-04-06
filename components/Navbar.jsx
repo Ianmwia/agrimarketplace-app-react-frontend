@@ -117,16 +117,16 @@ export default function Navbar(){
 
                 {/*role links */}
                 {user?.role === 'buyer' && 
-                <Link to='/market' className='text-foreground'>Market</Link>
+                <Link to='/market' className='text-foreground text-lg font-bold'>Market</Link>
                 }
                 {user?.role === 'farmer' &&
-                <Link to='/farmer' className='text-foreground'>Farmer</Link>
+                <Link to='/farmer' className='text-foreground text-lg font-bold'>Farmer</Link>
                 }
                 {user?.role === 'field_officer' &&
-                <Link to='/field_officer' className='text-foreground'>Field Officer Reports</Link>
+                <Link to='/field_officer' className='text-foreground text-lg font-bold'>Field Officer Reports</Link>
                 }
                 {user && 
-                <Link to='/thread' className='text-foreground'>Chat</Link>
+                <Link to='/thread' className='text-foreground text-lg font-bold'>Chat</Link>
                 }
                 {/*not logged in */}
                 {/* {!user && 
