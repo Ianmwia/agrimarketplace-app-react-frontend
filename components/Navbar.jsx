@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTheme } from 'next-themes';
+import { User2 } from 'lucide-react';
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { useState } from 'react';
@@ -58,7 +59,7 @@ const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, naviga
                             <Avatar className='h-8 w-8 shrink-0'>
                                 <AvatarImage src={user?.image} className='w-full h-full object-cover'/>
                                 <AvatarFallback>
-                                    pfp
+                                    <User2 className='w-5 h-5 rounded-full'/>
                                 </AvatarFallback>
                             </Avatar>
                         </Button>
