@@ -104,7 +104,7 @@ export default function Navbar({onSearch, showSearch}){
             <div className='container mx-auto flex flex-row-reverse h-16 items-center justify-between px-4 relative'>
             {/*brand web name */}
             {!user ?( 
-            <div className={`absolute left-1/2 -translate-x-1/2 transition-all duration-300 gap-1 group`}>
+            <div className={`absolute flex items-center left-1/2 -translate-x-1/2 transition-all duration-300 gap-1 group`}>
                 <img className='h-8 w-8 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110' 
                 src="/farmer-svgrepo-com.svg" alt="logo-kilimo" />
                 <Link to='/' className='text-4xl font-bold tracking-tighter'>Kilimo</Link>
@@ -148,7 +148,7 @@ export default function Navbar({onSearch, showSearch}){
                 <NavActions {...actionProps}/> 
             </div>
 
-            {showSearch && (
+            {showSearch && user && (
                 <div className='hidden lg:flex items-center justify-center px-6 lg:order-2 lg:mx-auto'>
                     <div className=''>
                     <SearchMarketplace  onSearch={onSearch}/>
