@@ -105,10 +105,12 @@ export default function Navbar({onSearch, showSearch}){
             {/*brand web name */}
             {!user ?( 
             <div className={`absolute left-1/2 -translate-x-1/2 transition-all duration-300`}>
+                <img className='h-8 w-8' src="/public/farmer-svgrepo-com.svg" alt="logo-kilimo" />
                 <Link to='/' className='text-4xl font-bold tracking-tighter'>Kilimo</Link>
             </div>
             ): (
-                <div className='lg:order-1 lg:ml-auto'>
+                <div className='lg:order-1 lg:ml-auto flex items-center gap-1'>
+                <img className='h-8 w-8' src="/public/farmer-svgrepo-com.svg" alt="logo-kilimo" />
                 <p className='text-4xl font-bold tracking-tighter'>Kilimo</p>
                 </div>
             )}
