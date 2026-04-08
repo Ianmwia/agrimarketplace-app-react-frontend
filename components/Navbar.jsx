@@ -133,9 +133,9 @@ export default function Navbar({onSearch, showSearch}){
                 {user?.role === 'field_officer' &&
                 <Link to='/field_officer' className='text-foreground text-lg font-bold'>Field Officer Reports</Link>
                 }
-                {/* {user && 
-                <Link to='/thread' className='text-foreground text-lg font-bold'>Chat</Link>
-                } */}
+                {user && 
+                <Link to='/thread' className='hidden md:flex lg:hidden text-foreground text-lg font-bold'>Chat</Link>
+                }
                 {/*not logged in */}
                 {/* {!user && 
                 <Link to='/login' className='text-foreground'>Login</Link>
