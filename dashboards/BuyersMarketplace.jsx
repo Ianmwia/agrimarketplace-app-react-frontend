@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import API from '@/api';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 import PaymentMethod from './PaymentDialog';
 import { useOutletContext } from 'react-router-dom';
@@ -22,6 +23,7 @@ export default function Marketplace(){
     const [debounceQuery, setDebounceQuery] = useState('')
     const [selectOrder, setSelectOrder] = useState(null)
     const [user, setUser] = useState(null)
+
     // pagination
     const [currentOrderPage, setCurrentOrderPage] = useState('order/')
     const [nextPage, setNextPage] = useState(null)
@@ -216,6 +218,21 @@ export default function Marketplace(){
             </div>
           </div>
         )} */}
+
+      
+
+    <div className="mt-4 hidden lg:block w-full">
+      <Link
+        to="/thread"
+        className="flex items-center justify-start px-3 rounded-full font-bold h-12 transition-all text-foreground hover:bg-accent hover:text-accent-foreground"
+      >
+        <User className="mr-2 h-5 w-5" />
+        <span>Chat</span>
+      </Link>
+    </div>
+          
+        
+        
         
       </div>
     </aside>
