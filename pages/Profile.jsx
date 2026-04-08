@@ -118,7 +118,7 @@ export default function Profile(){
                                         <p className='text-lg font-medium'>{user?.role}</p>
                                     </div>
 
-                                    <div className='pt-6 flex gap-3 sm:flex-col'>
+                                    <div className='pt-6 flex gap-3 flex-col md:flex-row'>
                                         <Button
                                             onClick={()=> setIsEditing(true)}
                                             className='w-full md:w-auto px-10'
