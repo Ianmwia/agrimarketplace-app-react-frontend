@@ -1,9 +1,41 @@
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/context/useAuth'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
 import { Check, ChevronRight, Users, Sprout, ShoppingBag, MessageCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function Home(){
+    const {user, loading} = useAuth()
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+        if (!loading && user){
+            const rolePaths = {
+                farmer: '/farmer',
+                field_officer: '/field_officer',
+                buyer:'/market'
+            }
+            navigate(rolePaths[user.role] || '/profile', {replace: true})
+        }
+    }, [user, loading, navigate])
+
+    if (loading){
+        return (
+            <div className='flex h-screen w-full flex-col items-center justify-center space-y-4 p-8'>
+                <div className='relative flex items-center justify-center'>
+                <Skeleton className='h-32 w-32 rounded-full'/>
+                    <span className='absolute text-xl font-bold tracking-tighter text-muted-foreground animate-pulse'>
+                        KILIMO
+                    </span>
+                </div>
+            </div>
+        )
+    }
+
 return(
 <div className='flex flex-col'>
     <div className='min-h-screen bg-[linear-gradient(1deg,rgba(42,123,155,0.37)_0%,rgba(242,242,242,1)_46%)] dark:bg-none dark:bg-background flex flex-col justify-center items-center p-6 text-center'>
@@ -17,7 +49,7 @@ return(
             </div>
         </div>
         <div className='flex flex-col sm:flex-row items-center justify-center gap-4 pt-4'> 
-            <Button size='lg' className={`gap-2`}>
+            <Button size='lg' asChild className={`gap-2`}>
                 <Link to='/signup'>Start Your Journey</Link></Button>
             <Button size='lg' variant='outline'
             onClick={()=>{document.getElementById('features')?.scrollIntoView({behavior:'smooth'})}}
