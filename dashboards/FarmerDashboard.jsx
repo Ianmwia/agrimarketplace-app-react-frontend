@@ -9,6 +9,7 @@ import ReportForm from './farmerspages/ReportForm'
 import FarmerViewReport from './farmerspages/FarmerViewReports';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function FarmerDashboard(){
     const location = useLocation()
@@ -24,7 +25,7 @@ export default function FarmerDashboard(){
         <div className="flex flex-col lg:flex-row min-h-screen w-full bg-background">
                 {/* sidebar on lg only */}
             <aside className="w-full lg:w-72 lg:fixed lg:h-screen border-b lg:border-b-0 lg:border-r lg:bg-card z-40">
-                <div className="p-4 lg:p-8 flex lg:flex-col flex-row gap-2 overflow-x-auto lg:overflow-x-visible no-scrollbar">
+                <div className="p-4 lg:p-8 grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-col flex-row flex-wrap gap-2 lg:overflow-x-visible no-scrollbar">
                     <div className="hidden lg:block mb-8 px-2">
                         <h2 className="text-2xl font-black tracking-tighter text-primary">KILIMO</h2>
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Farmer Portal</p>
@@ -33,7 +34,8 @@ export default function FarmerDashboard(){
                     <Button
                         onClick={() => setTab('produce')}
                         variant={tab === 'produce' ? 'default' : 'ghost'}
-                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full ${
+                        className={`px-6 justify-start rounded-xl font-bold h-12 lg:flex-none lg:w-full
+                            ${
                             tab === "produce" ? "shadow-md" : ""
                         }`}
                     >
@@ -43,7 +45,7 @@ export default function FarmerDashboard(){
                     <Button
                         onClick={() => setTab('produce-list')}
                         variant={tab === 'produce-list' ? 'default' : 'ghost'}
-                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full ${
+                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full whitespace-nowrap ${
                             tab === "produce-list" ? "shadow-md" : ""
                         }`}
                     >
@@ -53,7 +55,7 @@ export default function FarmerDashboard(){
                     <Button
                         onClick={() => setTab('orders')}
                         variant={tab === 'orders' ? 'default' : 'ghost'}
-                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full ${
+                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full whitespace-nowrap ${
                             tab === "orders" ? "shadow-md" : ""
                         }`}
                     >
@@ -63,7 +65,7 @@ export default function FarmerDashboard(){
                     <Button
                         onClick={() => setTab('report')}
                         variant={tab === 'report' ? 'default' : 'ghost'}
-                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full ${
+                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full whitespace-nowrap ${
                             tab === "report" ? "shadow-md" : ""
                         }`}
                     >
@@ -73,11 +75,25 @@ export default function FarmerDashboard(){
                     <Button
                         onClick={() => setTab('report-created')}
                         variant={tab === 'report-created' ? 'default' : 'ghost'}
-                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full ${
+                        className={`px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full whitespace-nowrap ${
                             tab === "report-created" ? "shadow-md" : ""
                         }`}
                     >
                         View Reports Created
+                    </Button>
+
+                    <Button
+                        asChild
+                        variant='ghost'
+                        className='hidden lg:flex px-6 justify-start rounded-xl font-bold h-12 flex-none lg:w-full'
+
+                    >
+                        <Link
+                            to="/thread"
+                                className=""
+                              >
+                                <span>Chat</span>
+                        </Link>
                     </Button>
                 </div>
             </aside>
