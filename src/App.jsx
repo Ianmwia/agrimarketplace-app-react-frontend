@@ -35,7 +35,7 @@ function App() {
         {/*navbar routes */}
         <Route element={<Layout />}>
 
-            <Route path='' element={<Home/>}/>
+            <Route index element={<Home/>}/>
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/change-password' element={<ChangePassword/>}/>
             <Route path='/thread' element={<Chat/>}/>
