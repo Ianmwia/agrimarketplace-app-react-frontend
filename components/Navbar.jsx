@@ -14,6 +14,8 @@ import { toast } from 'sonner';
 import API from '../src/api';
 import { useAuth } from '@/context/useAuth';
 
+import SearchMarketplace from './SearchMarketplace';
+
 const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, navigate}) => {
         //logout function
         const handleLogout = async () => {
@@ -84,7 +86,8 @@ const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, naviga
         )
     }
 
-export default function Navbar(){
+export default function Navbar({onSearch, showSearch}){
+    
     const {theme, setTheme} = useTheme()
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
@@ -105,13 +108,13 @@ export default function Navbar(){
                 <Link to='/' className='text-4xl font-bold tracking-tighter'>Kilimo</Link>
             </div>
             ): (
-                <div>
+                <div className='lg:order-1 lg:ml-auto'>
                 <p className='text-4xl font-bold tracking-tighter'>Kilimo</p>
                 </div>
             )}
 
             {/*nav for links */}
-            <nav className='hidden md:flex items-center gap-8 text-sm font-medium'>
+            <nav className='hidden md:flex items-center gap-8 text-sm font-medium lg:order-3 lg:mr-10'>
                 {/* {!user && (
                     <Link to='/' className='text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-foreground after:transition-all after:duration-300 hover:after:w-full'>Home</Link>
                 )} */}
@@ -137,12 +140,20 @@ export default function Navbar(){
             </nav>
 
             {/*theme toggle */}
-            <div className='hidden md:flex items-center gap-3'>
+            <div className='hidden md:flex items-center gap-3 lg:order-4 lg:mr-auto'>
                 <NavActions {...actionProps}/> 
             </div>
 
+            {showSearch && (
+                <div className='hidden lg:flex items-center justify-center px-6 lg:order-2 lg:mx-auto'>
+                    <div className=''>
+                    <SearchMarketplace onSearch={onSearch}/>
+                    </div>
+                </div>
+            )}
+
             {/*hamburger menu */}
-            <div className='md:hidden flex items-center'>
+            <div className='md:hidden flex items-center lg:order-5'>
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>
                     <SheetTrigger asChild>
                         <Button variant='ghost' size='icon' className='ml-1'>
