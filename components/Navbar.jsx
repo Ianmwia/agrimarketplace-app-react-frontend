@@ -148,7 +148,7 @@ export default function Navbar({onSearch, showSearch}){
                 <NavActions {...actionProps}/> 
             </div>
 
-            {showSearch && user && (
+            {showSearch && user && user.role ==='buyer' && (
                 <div className='hidden lg:flex items-center justify-center px-6 lg:order-2 lg:mx-auto'>
                     <div className=''>
                     <SearchMarketplace  onSearch={onSearch}/>
