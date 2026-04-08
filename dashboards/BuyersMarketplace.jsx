@@ -3,6 +3,7 @@ import API from '@/api';
 import { toast } from 'sonner';
 // import { useNavigate } from 'react-router-dom';
 import PaymentMethod from './PaymentDialog';
+import { useOutletContext } from 'react-router-dom';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,7 +18,7 @@ export default function Marketplace(){
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([])
     const [orderQuantity, setOrderQuantity] = useState({}); //stores productId and quantity
-    const [searchQuery, setSearchQuery] = useState('')
+    const {searchQuery, setSearchQuery} = useOutletContext()
     const [debounceQuery, setDebounceQuery] = useState('')
     const [selectOrder, setSelectOrder] = useState(null)
     const [user, setUser] = useState(null)
@@ -184,7 +185,7 @@ export default function Marketplace(){
           <Button
             onClick={() => setTab('market')}
             variant={tab === 'market' ? 'default' : 'ghost'}
-            className={`flex-1 lg:flex-none justify-start px-6 font-bold rounded-xl h-12 transition-all ${
+            className={`flex-1 lg:flex-none justify-start px-6 font-bold rounded-full h-12 transition-all ${
               tab === 'market' ? 'shadow-md' : ''
             }`}
           >
@@ -195,7 +196,7 @@ export default function Marketplace(){
           <Button
             onClick={() => setTab('orders')}
             variant={tab === 'orders' ? 'default' : 'ghost'}
-            className={`flex-1 lg:flex-none justify-start px-6 rounded-xl font-bold h-12 transition-all ${
+            className={`flex-1 lg:flex-none justify-start px-6 rounded-full font-bold h-12 transition-all ${
               tab === 'orders' ? 'shadow-md' : ''
             }`}
           >
@@ -204,8 +205,8 @@ export default function Marketplace(){
           </Button>
         </nav>
 
-        {/* Search Bar - Moved to sidebar for desktop for a cleaner look */}
-        {tab === 'market' && (
+              {/* searchbar side lg */}
+        {/* {tab === 'market' && (
           <div className="mt-4 hidden lg:block">
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3 px-2">
               Quick Search
@@ -214,7 +215,7 @@ export default function Marketplace(){
             <SearchMarketplace onSearch={setSearchQuery} />
             </div>
           </div>
-        )}
+        )} */}
         
       </div>
     </aside>
