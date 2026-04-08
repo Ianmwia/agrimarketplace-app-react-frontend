@@ -5,6 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProtectedRoute({children, allowedRoles}){
     const {user, loading} = useAuth()
+    const token = localStorage.getItem('token')
 
     if (loading){
         return (
@@ -17,6 +18,10 @@ export default function ProtectedRoute({children, allowedRoles}){
                 </div>
             </div>
         )
+    }
+
+    if (!user && !token){
+        return null
     }
 
     if(!user)  return <Navigate to='/login' replace />
