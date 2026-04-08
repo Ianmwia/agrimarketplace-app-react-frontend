@@ -27,7 +27,7 @@ const NavActions = ({isMobile, user, setUser, setTheme, theme, setIsOpen, naviga
             }
             localStorage.removeItem('token')
             setUser(null)
-            navigate('/login')
+            navigate('/')
             setIsOpen(false)
         }
         //icons
