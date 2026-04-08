@@ -106,13 +106,13 @@ export default function Navbar({onSearch, showSearch}){
             {!user ?( 
             <div className={`absolute left-1/2 -translate-x-1/2 transition-all duration-300 gap-1 group`}>
                 <img className='h-8 w-8 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110' 
-                src="/public/farmer-svgrepo-com.svg" alt="logo-kilimo" />
+                src="/farmer-svgrepo-com.svg" alt="logo-kilimo" />
                 <Link to='/' className='text-4xl font-bold tracking-tighter'>Kilimo</Link>
             </div>
             ): (
                 <div className='lg:order-1 lg:ml-auto flex items-center gap-1 group'>
                 <img className='h-8 w-8 transition-all duration-500 group-hover:animate-spin group-hover:scale-110' 
-                src="/public/farmer-svgrepo-com.svg" alt="logo-kilimo" />
+                src="/farmer-svgrepo-com.svg" alt="logo-kilimo" />
                 <p className='text-4xl font-bold tracking-tighter'>Kilimo</p>
                 </div>
             )}
@@ -151,7 +151,7 @@ export default function Navbar({onSearch, showSearch}){
             {showSearch && (
                 <div className='hidden lg:flex items-center justify-center px-6 lg:order-2 lg:mx-auto'>
                     <div className=''>
-                    <SearchMarketplace onSearch={onSearch}/>
+                    <SearchMarketplace  onSearch={onSearch}/>
                     </div>
                 </div>
             )}
