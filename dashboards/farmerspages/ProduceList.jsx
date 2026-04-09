@@ -104,7 +104,7 @@ export default function ProduceList(){
                                     <p className='text-sm text-muted-foreground'>Farmer</p>
                                     <p className='text-lg font-bold'>{item.farmer_name}</p>
                                 </div> */}
-                                <div className='flex gap-2 justify-between'>
+                                <div className='flex gap-2 items-center justify-between'>
                                     <p className='text-sm text-muted-foreground'>Description:</p>
                                     <p className='text-lg font-bold truncate'>{item.description}</p>
                                 </div>
@@ -112,15 +112,15 @@ export default function ProduceList(){
                                     <div className='space-y-3 mt-3 '>
                                         {item.batches.map(batch =>(
                                             <div key={batch.id} className='rounded-md'>
-                                                <div className='flex justify-between'>
+                                                <div className='flex items-center justify-between'>
                                                     <p className='text-sm text-muted-foreground'>Batch Number:</p>
                                                     <p className='text-lg font-bold'>#{batch.batch_number}</p>
                                                 </div>
-                                                <div className='flex gap-2 justify-between'>
+                                                <div className='flex gap-2 items-center justify-between'>
                                                     <p className='text-sm text-muted-foreground'>Quantity:</p>
                                                     <p className='text-lg font-semibold'>{batch.quantity} {unitLabels[batch.unit]}</p>
                                                 </div>
-                                                <div className='flex gap-2 justify-between'>
+                                                <div className='flex gap-2 items-center justify-between'>
                                                     <p className='text-sm text-muted-foreground'>Price:</p>
                                                     <p className='text-lg font-bold'>Ksh {batch.price_per_unit}</p>
                                                 </div>
