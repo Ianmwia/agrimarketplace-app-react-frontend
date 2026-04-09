@@ -69,7 +69,7 @@ return(
             </div>
         </div>
     
-            <div id='features' className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8'>
+            <div id='features' className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 p-8'>
             <Card className='hover:shadow-lg transition-all'>
                 <CardHeader className={`flex flex-row items-center gap-3 border-b`}>
                     <Users className='w-6 h-6 text-pr'/>
@@ -188,7 +188,7 @@ return(
             </Card>
             </div>
 
-            <div className='p-3 '>
+            <div className='p-3 md:p-8 lg:p-17 '>
                 <div className='min-h-screen border  rounded-2xl p-2 md:flex md:flex-row md:items-center md:gap-4'>
                     <div className='mb-3 md:mb-0 md:w-1/2'>
                         <img className='rounded-xl' src="/farm maize.avif" alt="maize farm" />
@@ -206,7 +206,7 @@ return(
                 </div>
             </div>
             
-            <div className='p-3 '>
+            <div className='p-3 md:p-8 lg:p-17 '>
                 <div className='min-h-screen border  rounded-2xl p-2 md:flex md:flex-row-reverse md:items-center md:gap-4'>
                     <div className='mb-3 md:mb-0 md:w-1/2'>
                         <img className='rounded-xl' src="/farm potatoes.webp" alt="maize farm" />
