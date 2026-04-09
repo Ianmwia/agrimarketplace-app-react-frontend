@@ -106,7 +106,7 @@ export default function ProduceList(){
                                 </div> */}
                                 <div className='flex gap-2 justify-between'>
                                     <p className='text-sm text-muted-foreground'>Description:</p>
-                                    <p className='text-lg font-bold'>{item.description}</p>
+                                    <p className='text-lg font-bold truncate'>{item.description}</p>
                                 </div>
                                 {item.batches && item.batches.length > 0 ? (
                                     <div className='space-y-3 mt-3 '>
@@ -126,10 +126,11 @@ export default function ProduceList(){
                                                 </div>
                                             </div>
                                         ))}
-                                        <div className='flex gap-4'>
+                                        <div className='flex flex-wrap gap-2'>
                                         <Button
                                         onClick={()=> deleteProduce(item.id)}
                                         variant='destructive'
+                                        className={`flex-1`}
                                         >
                                             Delete Produce
                                         </Button>
@@ -137,6 +138,7 @@ export default function ProduceList(){
                                         <Button
                                         onClick={()=> navigate(`/produce/update/${item.id}`)}
                                         variant='outline'
+                                        className={`flex-1`}
                                         >
                                             Update Produce
                                         </Button>
