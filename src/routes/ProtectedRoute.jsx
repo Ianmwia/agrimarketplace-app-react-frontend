@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/context/useAuth';
 import { Skeleton } from '@/components/ui/skeleton';
+import LoadingFacts from '../../facts/LoadingFacts';
 
 
 export default function ProtectedRoute({children, allowedRoles}){
@@ -15,6 +16,9 @@ export default function ProtectedRoute({children, allowedRoles}){
                     <span className='absolute text-xl font-bold tracking-tighter text-muted-foreground animate-pulse'>
                         KILIMO
                     </span>
+                </div>
+                <div>
+                    <LoadingFacts/>
                 </div>
             </div>
         )
