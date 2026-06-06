@@ -82,8 +82,16 @@ export default function ProduceForm({onSuccess}){
                 });
             e.target.reset()
                 
-        } catch {
-            toast.error('Failed to create produce')
+        } catch(error) {
+            //toast.error('Failed to create produce')
+            const backendErrors = error.response?.data;
+            if (backendErrors && typeof backendErrors === 'object') {
+                Object.values(backendErrors).forEach((errorMessage) => {
+                    toast.error(String(errorMessage))
+                })
+            } else {
+                toast.error('Failed to create produce')
+            }
         } finally {
             setLoading(false)
         }
